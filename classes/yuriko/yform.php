@@ -11,6 +11,7 @@ abstract class Yuriko_YForm {
 
 	/**
 	 * Values directly accessible by __get()
+	 * The Element View will mostly be interested in these values
 	 *
 	 * @var array
 	 */
@@ -35,7 +36,8 @@ abstract class Yuriko_YForm {
 	 */
 	public function  __construct()
 	{
-		$this->_filename = strtolower(str_replace('YForm_', '', get_class($this)));
+		$array = explode('_', get_class($this));
+		$this->_filename = strtolower(array_pop($array));
 	}
 
 	/**

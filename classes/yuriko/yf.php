@@ -16,9 +16,9 @@ class Yuriko_YF {
 	 * @param string $name
 	 * @return class
 	 */
-	public static function item($element, $name)
+	public static function element($element, $name)
 	{
-		$class = 'YForm_'.ucfirst($element);
+		$class = 'YForm_Element_'.ucfirst($element);
 
 		return new $class($name);
 	}

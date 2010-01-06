@@ -7,4 +7,13 @@
  * @license    http://yurikocms.com/license
  */
 
-class YForm_Text extends Yuriko_YForm_Text {}
+class Yuriko_YForm_Element_Text extends YForm_Element {
+
+	public function __construct($name)
+	{
+		parent::__construct($name);
+
+		$this->attributes->set('type', 'text');
+	}
+	
+} // End Yuriko_YForm_Element_Text

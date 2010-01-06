@@ -7,4 +7,13 @@
  * @license    http://yurikocms.com/license
  */
 
-class YForm_Form extends Yuriko_YForm_Form {}
+class Yuriko_YForm_Element_Submit extends YForm_Element {
+
+	public function __construct($name)
+	{
+		parent::__construct($name);
+
+		$this->attributes->set('type', 'submit');
+	}
+	
+} // End Yuriko_YForm_Element_Submit
