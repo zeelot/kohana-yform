@@ -9,14 +9,10 @@
 
 class Yuriko_YForm_Settings {
 
-	/**
-	 * @TODO: clean this up
-	 *
-	 * @var array
-	 */
 	protected $_settings = array
 	(
-		'values' => array(),
+		'theme'		=> 'default',
+		'values'	=> array(),
 	);
 
 	/**
@@ -29,38 +25,32 @@ class Yuriko_YForm_Settings {
 	 */
 	protected $_messages = array();
 
-	/**
-	 * Returns a specific setting or $default if it is not set
-	 *
-	 * @param string $key
-	 * @param mixed $default
-	 * @return mixed
-	 */
-	public function get($key, $default = FALSE)
+	public static function factory($group = 'default')
 	{
-		if (isset($this->_settings[$key]))
-		{
-			return $this->_settings[$key];
-		}
-
-		return $default;
+		return new self($config);
 	}
 
-	/**
-	 * Returns a value for a specific element or $default if it is not set
-	 *
-	 * @param string $key
-	 * @param mixed $default
-	 * @return mixed
-	 */
-	public function value($key, $default = FALSE)
+	public function __construct($group = 'default')
 	{
-		if (isset($this->_settings['value'][$key]))
-		{
-			return $this->_settings['value'][$key];
-		}
+		$config = Kohana::config('yform.'.$group);
+		$this->_settings = array_merge($this->_settings, $config);
+	}
 
-		return $default;
+	public function __get($key)
+	{
+		return $this->_settings[$key];
+	}
+
+	public function __set($key, $value)
+	{
+		$this->_settings[$key] = $value;
+	}
+
+	public function set($key, $value)
+	{
+		$this->__set($key, $value);
+
+		return $this;
 	}
 
 	/**
@@ -69,7 +59,7 @@ class Yuriko_YForm_Settings {
 	 * ex: set_values($_POST, $user->as_array())
 	 *
 	 * @param array $args
-	 * @return self
+	 * @return object
 	 */
 	public function set_values()
 	{
@@ -85,30 +75,15 @@ class Yuriko_YForm_Settings {
 
 		return $this;
 	}
-
-	/**
-	 * Changes the theme for a form (no trailing slash)
-	 *
-	 * ex: set_theme('yform/themes/pretty')
-	 *
-	 * @param string $theme
-	 * @return self
-	 */
-	public function set_theme($theme)
-	{
-		$this->_settings['theme'] = $theme;
-
-		return $this;
-	}
-
+	
 	/**
 	 * Adds an array of messages into a specific group
-	 * 
+	 *
 	 * ex: add_messages('error', (array)$errors)
 	 *
 	 * @param string $group
 	 * @param array $messages
-	 * @return self
+	 * @return object
 	 */
 	public function add_messages($group, array $messages)
 	{
@@ -118,6 +93,11 @@ class Yuriko_YForm_Settings {
 		}
 
 		return $this;
+	}
+
+	public function view($element)
+	{
+		return $this->_settings['views'][$element];
 	}
 
 	/**

@@ -7,4 +7,4 @@
  * @license    http://yurikocms.com/license
  */
 
-abstract class YForm extends Yuriko_YForm {}
+class YForm extends Yuriko_YForm {}

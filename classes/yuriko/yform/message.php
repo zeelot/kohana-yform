@@ -7,11 +7,13 @@
  * @license    http://yurikocms.com/license
  */
 
-class Yuriko_YForm_Message extends YForm {
+class Yuriko_YForm_Message extends YForm_Element {
 
-	public function __construct($group, $text)
+	public function __construct($group, $text, YForm_Settings $settings = NULL)
 	{
-		parent::__construct();
+		($settings === NULL) AND $settings = new YForm_Settings();
+
+		parent::__construct($settings, $group);
 		
 		$this->group = $group;
 		

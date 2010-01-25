@@ -2,7 +2,7 @@
 <?php if ($open): ?>
 
 <!-- BEGIN YForm_Element_Form -->
-<form <?php echo $object->attributes; ?>>
+<form <?php echo HTML::attributes($attributes); ?>>
 
 <?php else: ?>
 

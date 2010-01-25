@@ -7,4 +7,4 @@
  * @license    http://yurikocms.com/license
  */
 
-class YForm_Element_Submit extends Yuriko_YForm_Element_Submit {}
+class YForm_Field_Text extends Yuriko_YForm_Field_Text {}

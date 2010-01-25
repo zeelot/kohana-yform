@@ -7,7 +7,7 @@
  * @license    http://yurikocms.com/license
  */
 
-class Controller_YForm_Demo extends Controller_Template {
+class Controller_YForm_Demo extends Controller_Yuriko_Template {
 
 	public function action_payment()
 	{

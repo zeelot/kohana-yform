@@ -7,127 +7,118 @@
  * @license    http://yurikocms.com/license
  */
 
-abstract class Yuriko_YForm {
+class Yuriko_YForm extends YForm_Element {
 
 	/**
-	 * Values directly accessible by __get()
-	 * The Element View will mostly be interested in these values
+	 * Settings object for elements created by this object
 	 *
 	 * @var array
 	 */
-	protected $_object = array();
+	protected $_settings;
 
-	/**
-	 * The directory path to the view
-	 *
-	 * @var string
-	 */
-	protected $_theme = 'yform/themes/default';
-
-	/**
-	 * The name of the View
-	 *
-	 * @var string
-	 */
-	protected $_filename;
-
-	/**
-	 * Sets the View to be the name of the element type
-	 */
-	public function  __construct()
+	public function __construct($name = NULL, YForm_Settings $settings = NULL)
 	{
-		$array = explode('_', get_class($this));
-		$this->_filename = strtolower(array_pop($array));
+		$this->_settings = ($settings)? $settings : new YForm_Settings();
+
+		parent::__construct($this->_settings, $name);
 	}
 
 	/**
-	 * Easy access to element properties
-	 * @TODO: probably needs to do more
+	 * Returns an instance of an element
 	 *
-	 * @param string $key
-	 * @return mixed
+	 * @param string $method
+	 * @param array $args
+	 * @return object
 	 */
-	public function __get($key)
+	public function __call($method, $args)
 	{
-		if (isset($this->_object[$key]))
+		$element = 'YForm_Field_'.ucfirst($method);
+
+		$args = (array)$args;
+
+		// add settings object as first parameter
+		array_unshift($args, $this->_settings);
+
+		$class = new ReflectionClass($element);
+
+        $instance = $class->newInstanceArgs($args);
+
+		return $instance;
+	}
+
+	public function message($group, $text)
+	{
+		return new YForm_Message($group, $text);
+	}
+
+	public static function factory($name = NULL, YForm_Settings $settings = NULL)
+	{
+		return new YForm($name, $settings);
+	}
+
+	/**
+	 * Renders the view for opening a form
+	 *
+	 * @return string
+	 */
+	public function open($action = NULL, array $attributes = NULL)
+	{
+		if ($action === NULL)
 		{
-			return $this->_object[$key];
+			// Use the current URI
+			$action = Request::instance()->uri;
 		}
-		else
+
+		if ($action === '')
 		{
-			throw new Kohana_Exception('The :property property does not exist in the :class class',
-				array(':property' => $column, ':class' => get_class($this)));
+			// Use only the base URI
+			$action = Kohana::$base_url;
 		}
+		elseif (strpos($action, '://') === FALSE)
+		{
+			// Make the URI absolute
+			$action = URL::site($action);
+		}
+
+		// Add the form action to the attributes
+		$attributes['action'] = $action;
+
+		// Only accept the default character set
+		$attributes['accept-charset'] = Kohana::$charset;
+
+		if ( ! isset($attributes['method']))
+		{
+			// Use POST method
+			$attributes['method'] = 'post';
+		}
+
+		$attributes += $this->attributes->as_array();
+
+		return View::factory($this->view())
+			->set('object', $this)
+			->set('attributes', $attributes)
+			->set('open', TRUE)
+			->render();
 	}
 
-	/**
-	 * Alias for set()
-	 *
-	 * @param string $key
-	 * @param mixed $value
-	 * @return self
-	 */
-	public function __set($key, $value)
+	public function open_multipart($action = NULL, array $attributes = NULL)
 	{
-		return $this->set($key, $value);
+		// Set multi-part form type
+		$attributes['enctype'] = 'multipart/form-data';
+
+		return $this->open($action, $attributes);
 	}
 
 	/**
-	 * Renders the view
+	 * Renders the view for closing a form
 	 *
 	 * @return string
 	 */
-	public function  __toString()
-	{
-		return $this->render();
-	}
-
-	/**
-	 * Sets a value in $_object
-	 * @TODO: probably needs to do more
-	 *
-	 * @param string $key
-	 * @param mixed $value
-	 * @return self
-	 */
-	public function set($key, $value)
-	{
-		$this->_object[$key] = $value;
-
-		return $this;
-	}
-
-	/**
-	 * Returns a value from $_object or $default if it is not set
-	 *
-	 * @param string $key
-	 * @param mixed $default
-	 * @return mixed
-	 */
-	public function get($key, $default = FALSE)
-	{
-		return (isset($this->_object[$key]))? $this->$key : $default;
-	}
-
-	/**
-	 * Returns the full path to the View file
-	 *
-	 * @return string
-	 */
-	public function view()
-	{
-		return $this->_theme.'/'.$this->_filename;
-	}
-
-	/**
-	 * Renders the View for this element
-	 *
-	 * @return string
-	 */
-	public function render()
+	public function close()
 	{
 		return View::factory($this->view())
 			->set('object', $this)
+			->set('open', FALSE)
 			->render();
 	}
 
