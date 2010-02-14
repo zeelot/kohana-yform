@@ -10,6 +10,15 @@
 abstract class Yuriko_YForm_Element {
 
 	protected $_config = array();
+	
+	
+	/**
+	 * Determines of an element has a label object automatically
+	 * created in the constructor
+	 *
+	 * @var array
+	 */
+	protected $_has_label = TRUE;
 
 	/**
 	 * Values directly accessible by __get()
@@ -31,12 +40,20 @@ abstract class Yuriko_YForm_Element {
 		$this->_object += array
 		(
 			'name'			=> $name,
-			'label'			=> new YForm_Label($settings, $name, $name),
 			// create the attributes object for this element
 			'attributes'	=> YForm_Attributes::factory()
 				->set('name', $name)
+				->set('value', $settings->value($name))
 				->add_id($name),
 		);
+		
+		if ($this->_has_label)
+		{
+			$this->_object += array
+			(
+				'label'		=> new YForm_Label($settings, $name, Kohana::message('yform', 'labels.'.$name, $name)),
+			);
+		}
 		
 		$type = strtolower(str_replace(array
 		(
