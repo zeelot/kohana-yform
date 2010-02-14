@@ -14,7 +14,7 @@ class Controller_YForm_Demo extends Controller_Yuriko_Template {
 		$view = $this->request->param('view');
 
 		$this->template->content =  View::factory('yform/demo/'.$view)
-			->bind('post', $_POST)
+			->bind('values', $_POST)
 			->bind('errors', $errors);
 		$this->title = 'YForm Demo!';
 
