@@ -7,7 +7,7 @@
  * @license    http://yurikocms.com/license
  */
 
-class Yuriko_YForm extends YForm_Element {
+class Yuriko_YForm {
 
 	/**
 	 * Settings object for elements created by this object
@@ -15,12 +15,19 @@ class Yuriko_YForm extends YForm_Element {
 	 * @var array
 	 */
 	protected $_settings;
+	
+	/**
+	 * The main Form element for this form
+	 *
+	 * @var object
+	 */
+	protected $_form;
 
 	public function __construct($name = NULL, YForm_Settings $settings = NULL)
 	{
 		$this->_settings = ($settings)? $settings : new YForm_Settings();
 
-		parent::__construct($this->_settings, $name);
+		$this->_form = $this->form($name);
 	}
 
 	/**
@@ -41,7 +48,7 @@ class Yuriko_YForm extends YForm_Element {
 
 		$class = new ReflectionClass($element);
 
-        $instance = $class->newInstanceArgs($args);
+		$instance = $class->newInstanceArgs($args);
 
 		return $instance;
 	}
@@ -49,6 +56,13 @@ class Yuriko_YForm extends YForm_Element {
 	public function message($group, $text)
 	{
 		return new YForm_Message($group, $text);
+	}
+	
+	public function values(array $values)
+	{
+		$this->_settings->values($values);
+		
+		return $this;
 	}
 
 	public static function factory($name = NULL, YForm_Settings $settings = NULL)
@@ -63,42 +77,7 @@ class Yuriko_YForm extends YForm_Element {
 	 */
 	public function open($action = NULL, array $attributes = NULL)
 	{
-		if ($action === NULL)
-		{
-			// Use the current URI
-			$action = Request::instance()->uri;
-		}
-
-		if ($action === '')
-		{
-			// Use only the base URI
-			$action = Kohana::$base_url;
-		}
-		elseif (strpos($action, '://') === FALSE)
-		{
-			// Make the URI absolute
-			$action = URL::site($action);
-		}
-
-		// Add the form action to the attributes
-		$attributes['action'] = $action;
-
-		// Only accept the default character set
-		$attributes['accept-charset'] = Kohana::$charset;
-
-		if ( ! isset($attributes['method']))
-		{
-			// Use POST method
-			$attributes['method'] = 'post';
-		}
-
-		$attributes += $this->attributes->as_array();
-
-		return View::factory($this->view())
-			->set('object', $this)
-			->set('attributes', $attributes)
-			->set('open', TRUE)
-			->render();
+		return $this->_form->open($action, $attributes);
 	}
 
 	public function open_multipart($action = NULL, array $attributes = NULL)
@@ -116,10 +95,7 @@ class Yuriko_YForm extends YForm_Element {
 	 */
 	public function close()
 	{
-		return View::factory($this->view())
-			->set('object', $this)
-			->set('open', FALSE)
-			->render();
+		return $this->_form->close();
 	}
 
 } // End Yuriko_YForm

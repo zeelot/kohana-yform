@@ -48,7 +48,7 @@ return array
 			'label'				=> 'html/label',
 			'message'			=> 'html/message',
 
-			'yform'				=> 'html/yform',
+			'form'				=> 'form',
 		),
 	),
 );
