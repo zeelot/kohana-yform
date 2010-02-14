@@ -9,7 +9,7 @@
 
 abstract class Yuriko_YForm_Element {
 
-	protected $_options = array();
+	protected $_config = array();
 
 	/**
 	 * Values directly accessible by __get()
@@ -44,7 +44,7 @@ abstract class Yuriko_YForm_Element {
 			'YForm_',
 		), '', get_class($this)));
 
-		$this->_options += array
+		$this->_config += array
 		(
 			'theme'		=> $settings->theme,
 			'view'		=> $settings->view($type),
@@ -120,21 +120,19 @@ abstract class Yuriko_YForm_Element {
 		return $this;
 	}
 
-	public function set_option($name, $value)
+	public function config($name, $value)
 	{
-		if (is_array($name))
-		{
-			foreach ($name as $key => $value)
-			{
-				$this->_options[$key] = $value;
-			}
-		}
-		else
-		{
-			$this->_options[$name] = $value;
-		}
+		$this->_config[$name] = $value;
 
 		return $this;
+	}
+	
+	public function configs(array $configs)
+	{
+		foreach ($configs as $key => $value)
+		{
+			$this->_config[$key] = $value;
+		}
 	}
 
 	/**
@@ -146,11 +144,19 @@ abstract class Yuriko_YForm_Element {
 	 * @param mixed $value
 	 * @return self
 	 */
-	public function set_attribute($key, $value)
+	public function attribute($key, $value)
 	{
 		$this->attributes->set($key, $value);
 
 		return $this;
+	}
+	
+	public function attributes(array $attributes)
+	{
+		foreach ($attributes as $key => $value)
+		{
+			$this->attributes->set($key, $value);
+		}
 	}
 
 	/**
@@ -251,7 +257,7 @@ abstract class Yuriko_YForm_Element {
 	 */
 	public function view()
 	{
-		return 'yform/themes/'.$this->_options['theme'].'/'.$this->_options['view'];
+		return 'yform/themes/'.$this->_config['theme'].'/'.$this->_config['view'];
 	}
 
 } // End Yuriko_YForm_Element

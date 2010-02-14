@@ -7,7 +7,7 @@
  * @license    http://yurikocms.com/license
  */
 
-Route::set('yform', 'yform(/<controller>(/<action>))')
+Route::set('yform', 'yform(/<controller>(/<view>))')
 	->defaults(array(
 		'controller' => 'demo',
 		'action'     => 'index',

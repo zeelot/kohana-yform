@@ -19,7 +19,7 @@ class Yuriko_YForm_Label extends YForm_Element {
 				->set('for', $for),
 		);
 
-		$this->_options += array
+		$this->_config += array
 		(
 			'theme'		=> $settings->theme,
 			'view'		=> $settings->view(strtolower(str_replace('YForm_', '', get_class($this)))),

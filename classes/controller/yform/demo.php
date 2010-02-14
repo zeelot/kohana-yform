@@ -9,9 +9,11 @@
 
 class Controller_YForm_Demo extends Controller_Yuriko_Template {
 
-	public function action_payment()
+	public function action_index()
 	{
-		$this->template->content =  View::factory('yform/demo/payment')
+		$view = $this->request->param('view');
+
+		$this->template->content =  View::factory('yform/demo/'.$view)
 			->bind('post', $_POST)
 			->bind('errors', $errors);
 		$this->title = 'YForm Demo!';
