@@ -27,7 +27,7 @@ class Yuriko_YForm_Settings {
 
 	public static function factory($group = 'default')
 	{
-		return new self($config);
+		return new self($group);
 	}
 
 	public function __construct($group = 'default')
@@ -61,7 +61,7 @@ class Yuriko_YForm_Settings {
 	 * @param array $args
 	 * @return object
 	 */
-	public function set_values()
+	public function values()
 	{
 		$args = func_get_args();
 
@@ -74,6 +74,14 @@ class Yuriko_YForm_Settings {
 		}
 
 		return $this;
+	}
+	
+	public function value($field)
+	{
+		if (isset($this->_settings['values'][$field]))
+		{
+			return $this->_settings['values'][$field];
+		}
 	}
 	
 	/**
