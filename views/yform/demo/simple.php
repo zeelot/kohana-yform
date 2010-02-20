@@ -10,7 +10,6 @@
 $form = YForm::factory('payment')
 	->values((array)$values)
 	->messages('error', (array)$errors);
-
 ?>
 
 <?php echo $form->open(); ?>
@@ -26,6 +25,17 @@ $form = YForm::factory('payment')
 		<?php echo $form->radio('color', 'green'); ?>
 		<?php echo $form->radio('color', 'orange'); ?>
 	</fieldset>
+
+	<?php echo $form->radioGroup('color')
+		// this is usually done with ORM::select_list() in one line
+		->add_options(array
+		(
+			'red'		=> 'red',
+			'blue'		=> 'blue',
+			'green'		=> 'green',
+			'orange'	=> 'orange',
+		)); ?>
+
 	<?php echo $form->submit('submit'); ?>
 </fieldset>
 <?php echo $form->close(); ?>

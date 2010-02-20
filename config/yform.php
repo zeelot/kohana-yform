@@ -36,8 +36,8 @@ return array
 			'checkbox'			=> 'input/checkbox',
 			'radio'				=> 'input/radio',
 
-			'checkbox_group'	=> 'choice/checkbox_group',
-			'radio_group'		=> 'choice/radio_group',
+			'checkboxgroup'		=> 'choice/checkboxGroup',
+			'radiogroup'		=> 'choice/radioGroup',
 			'select'			=> 'choice/select',
 
 			'textarea'			=> 'input/textarea',
