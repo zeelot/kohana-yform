@@ -1,15 +1,12 @@
-
+<?php
+	$errors = $object->messages('error', array());
+?>
 <!-- BEGIN YForm_Text Element -->
-<div class="yform-item yform-text">
-
-	<?php foreach ($object->messages('error', array()) as $message): ?>
-		<?php echo $message->render(); ?>
-	<?php endforeach; ?>
-
+<div class="yform-item yform-text<?php echo (empty($errors))? '': ' errors'; ?>">
 	<?php echo $object->label->render(); ?>
 	<input <?php echo $object->attributes; ?>/>
-	<?php foreach ($object->messages_exclude(array('error')) as $message): ?>
-		<?php echo $message->render(); ?>
+	<?php foreach ($errors as $error): ?>
+	<div class="error"><?php echo $error; ?></div>
 	<?php endforeach; ?>
 </div>
 <!-- END YForm_Text Element -->
