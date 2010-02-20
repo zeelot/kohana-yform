@@ -23,6 +23,11 @@ class Yuriko_YForm {
 	 */
 	protected $_form;
 
+	public static function factory($name = NULL, YForm_Settings $settings = NULL)
+	{
+		return new YForm($name, $settings);
+	}
+
 	public function __construct($name = NULL, YForm_Settings $settings = NULL)
 	{
 		$this->_settings = ($settings)? $settings : new YForm_Settings();
@@ -53,6 +58,13 @@ class Yuriko_YForm {
 		return $instance;
 	}
 
+	public function messages($group, array $messages)
+	{
+		$this->_settings->add_messages($group, $messages);
+
+		return $this;
+	}
+
 	public function message($group, $text)
 	{
 		return new YForm_Message($group, $text);
@@ -63,11 +75,6 @@ class Yuriko_YForm {
 		$this->_settings->values($values);
 		
 		return $this;
-	}
-
-	public static function factory($name = NULL, YForm_Settings $settings = NULL)
-	{
-		return new YForm($name, $settings);
 	}
 
 	/**
