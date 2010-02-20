@@ -97,7 +97,7 @@ class Yuriko_YForm_Settings {
 	{
 		foreach ($messages as $field => $message)
 		{
-			$this->_messages[$field][$group] = $message;
+			$this->_messages[$field][$group][] = $message;
 		}
 
 		return $this;
