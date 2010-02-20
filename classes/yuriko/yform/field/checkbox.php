@@ -15,5 +15,21 @@ class Yuriko_YForm_Field_Checkbox extends YForm_Element {
 
 		$this->attributes->set('type', 'checkbox');
 	}
+
+	/**
+	 * Overwrites this method to check the box if $value is anything but NULL
+	 *
+	 * @param mixed $value
+	 * @return self
+	 */
+	public function set_value($value)
+	{
+		if ($value !== NULL)
+		{
+			$this->attributes->set('checked', 'checked');
+		}
+
+		return $this;
+	}
 	
 } // End Yuriko_YForm_Field_Text
