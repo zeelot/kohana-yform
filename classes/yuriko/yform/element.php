@@ -43,7 +43,6 @@ abstract class Yuriko_YForm_Element {
 			// create the attributes object for this element
 			'attributes'	=> YForm_Attributes::factory()
 				->set('name', $name)
-				->set('value', $settings->value($name))
 				->add_id($name),
 		);
 		
@@ -66,6 +65,10 @@ abstract class Yuriko_YForm_Element {
 			'theme'		=> $settings->theme,
 			'view'		=> $settings->view($type),
 		);
+
+		$this->set_value($settings->value($name));
+
+		$this->_messages = $settings->messages($name, array());
 	}
 
 	/**
@@ -174,6 +177,15 @@ abstract class Yuriko_YForm_Element {
 		{
 			$this->attributes->set($key, $value);
 		}
+
+		return $this;
+	}
+
+	public function set_value($value)
+	{
+		$this->attributes->set('value', $value);
+
+		return $this;
 	}
 
 	/**
@@ -203,9 +215,12 @@ abstract class Yuriko_YForm_Element {
 		{
 			$messages = array();
 
-			if (isset($this->_messages[$group]))
+			foreach ($groups as $group)
 			{
-				$messages = $this->_messages[$group];
+				if (isset($this->_messages[$group]))
+				{
+					$messages = $this->_messages[$group];
+				}
 			}
 
 			return (empty($messages))? $default : $messages ;
