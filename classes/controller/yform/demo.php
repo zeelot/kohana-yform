@@ -16,11 +16,12 @@ class Controller_YForm_Demo extends Controller_Yuriko_Template {
 		$this->template->content =  View::factory('yform/demo/'.$view)
 			->bind('values', $_POST)
 			->bind('errors', $errors);
+
 		$this->title = 'YForm Demo!';
 
 		$errors = array
 		(
-			'last_name' => 'required',
+			'name' => 'This Field is Required!',
 		);
 
 		$this->request->response = $this->template;
