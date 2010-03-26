@@ -10,12 +10,29 @@
 class Yuriko_YForm {
 
 	/**
-	 * Settings object for elements created by this object
+	 * Settings for elements created by this object
 	 *
 	 * @var array
 	 */
-	protected $_settings;
-	
+	protected $_settings = array();
+
+	/**
+	 * Array of message strings organized into the element name they belong to
+	 * and in the group they were added as
+	 *
+	 * ex: $_messages['first_name']['error'] = 'required'
+	 *
+	 * @var array
+	 */
+	protected $_messages = array();
+
+	/**
+	 * Values for elements created by this object
+	 *
+	 * @var array
+	 */
+	protected $_values = array();
+
 	/**
 	 * The main Form element for this form
 	 *
@@ -23,14 +40,15 @@ class Yuriko_YForm {
 	 */
 	protected $_form;
 
-	public static function factory($name = NULL, YForm_Settings $settings = NULL)
+	public static function factory($name = NULL, $group = 'default')
 	{
-		return new YForm($name, $settings);
+		return new YForm($name, $group);
 	}
 
-	public function __construct($name = NULL, YForm_Settings $settings = NULL)
+	public function __construct($name = NULL, $group = 'default')
 	{
-		$this->_settings = ($settings)? $settings : new YForm_Settings();
+		$config = Kohana::config('yform.'.$group);
+		$this->_settings = array_merge($this->_settings, $config);
 
 		$this->_form = $this->form($name);
 	}
@@ -46,48 +64,143 @@ class Yuriko_YForm {
 	{
 		$element = 'YForm_Field_'.ucfirst($method);
 
-		$args = (array)$args;
-
-		// add settings object as first parameter
-		array_unshift($args, $this->_settings);
-
 		$class = new ReflectionClass($element);
 
 		$instance = $class->newInstanceArgs($args);
 
+		// Load settings from this form object
+		$instance->load_settings($this);
+
 		return $instance;
 	}
 
-	public function messages($group, array $messages)
+	/**
+	 * Adds an array of messages into a specific group
+	 *
+	 * ex: add_messages('error', (array)$errors)
+	 *
+	 * @param string $group
+	 * @param array $messages
+	 * @return object
+	 */
+	public function add_messages($group, array $messages)
 	{
-		$this->_settings->add_messages($group, $messages);
+		foreach ($messages as $field => $message)
+		{
+			$this->_messages[$field][$group][] = $message;
+		}
 
 		return $this;
 	}
 
-	public function message($group, $text)
+	/**
+	 * Returns all the messages for a field or $default if it is not set
+	 *
+	 * @param string $field
+	 * @param mixed $default
+	 * @return mixed
+	 */
+	public function get_messages($field, $default = FALSE)
 	{
-		return new YForm_Message($group, $text);
+		return Arr::get($this->_messages, $field, $default);
 	}
-	
-	public function values(array $values)
+
+	/**
+	 * Merges arrays into the values array
+	 *
+	 * ex: add_values($_POST, $user->as_array())
+	 *
+	 * @param array $args
+	 * @return object
+	 */
+	public function add_values()
 	{
-		$this->_settings->values($values);
-		
+		$args = func_get_args();
+
+		foreach ($args as $array)
+		{
+			$this->_values = array_merge($this->_values, $array);
+		}
+
 		return $this;
+	}
+
+	/**
+	 * Returns the value for a field or $default if it is not set
+	 *
+	 * @param string $field
+	 * @param mixed $default
+	 * @return mixed
+	 */
+	public function get_value($field, $default = FALSE)
+	{
+		return Arr::get($this->_values, $field, $default);
+	}
+
+	/**
+	 * Returns the path to the view in the current theme (defined by settings)
+	 *
+	 * @param string $element - the element name
+	 * @return string
+	 */
+	public function view($element)
+	{
+		return $this->_settings['views'][$element];
+	}
+
+	/**
+	 * Sets a value into the _settings array
+	 *
+	 * @param string $key
+	 * @param mixed $value
+	 * @return void
+	 */
+	public function __set($key, $value)
+	{
+		$this->_settings[$key] = $value;
+	}
+
+	/**
+	 * Sets a value into the _settings array
+	 *
+	 * @param string $key
+	 * @param mixed $value
+	 * @return self
+	 */
+	public function set($key, $value)
+	{
+		$this->__set($key, $value);
+
+		return $this;
+	}
+
+	/**
+	 * Returns a value from the _settings araay
+	 *
+	 * @param string $key
+	 * @return mixed
+	 */
+	public function __get($key)
+	{
+		return $this->_settings[$key];
 	}
 
 	/**
 	 * Renders the view for opening a form
 	 *
-	 * @return string
+	 * @return View
 	 */
-	public function open($action = NULL, array $attributes = NULL)
+	public function open($action = NULL, array $attributes = array())
 	{
 		return $this->_form->open($action, $attributes);
 	}
 
-	public function open_multipart($action = NULL, array $attributes = NULL)
+	/**
+	 * Renders the view for opening a form (with the multipart attribute)
+	 *
+	 * @return View
+	 */
+	public function open_multipart($action = NULL, array $attributes = array())
 	{
 		// Set multi-part form type
 		$attributes['enctype'] = 'multipart/form-data';
