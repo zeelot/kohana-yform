@@ -9,21 +9,21 @@
 
 class Yuriko_YForm_Label extends YForm_Element {
 
-	public function __construct(YForm_Settings $settings, $for, $text)
-	{		
+	protected $_has_label = FALSE;
+
+	public function __construct($for, $text)
+	{
 		$this->_object += array
 		(
-			'text'			=> $text,
-			// create the attributes object for this element
-			'attributes'	=> YForm_Attributes::factory()
-				->set('for', $for),
+			'text' => $text,
 		);
 
-		$this->_config += array
-		(
-			'theme'		=> $settings->theme,
-			'view'		=> $settings->view(strtolower(str_replace('YForm_', '', get_class($this)))),
-		);
+		$this->set_attribute('for', $for);
+	}
+
+	protected function element_name()
+	{
+		return strtolower(str_replace('YForm_', '', get_class($this)));
 	}
 
 } // End Yuriko_YForm_Label

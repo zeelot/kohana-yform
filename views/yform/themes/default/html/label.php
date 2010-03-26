@@ -1,6 +1,6 @@
 
 <!-- BEGIN YForm_Label -->
-<label <?php echo $object->attributes; ?>>
+<label <?php echo HTML::attributes($attributes); ?>>
 	<?php echo $object->text; ?>
 </label>
 <!-- END YForm_Label -->

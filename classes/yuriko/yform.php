@@ -74,6 +74,14 @@ class Yuriko_YForm {
 		return $instance;
 	}
 
+	public function label($for, $text)
+	{
+		$label = new YForm_Label($for, $text);
+		$label->load_settings($this);
+
+		return $label;
+	}
+
 	/**
 	 * Adds an array of messages into a specific group
 	 *

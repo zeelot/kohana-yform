@@ -67,13 +67,20 @@ abstract class Yuriko_YForm_Element {
 
 	public function load_settings(YForm $settings = NULL)
 	{
-		$element_name = str_replace('YForm_Field_', '', get_class($this));
-		$element_name = strtolower($element_name);
-
-		$this->set_config('view', $settings->view($element_name))
+		$this->set_config('view', $settings->view($this->element_name()))
 			->set_config('theme', $settings->theme);
 
+		if ($this->_has_label)
+		{
+			$this->label = $settings->label($this->name, $this->name);
+		}
+
 		return $this;
+	}
+
+	protected function element_name()
+	{
+		return strtolower(str_replace('YForm_Field_', '', get_class($this)));
 	}
 
 	/**

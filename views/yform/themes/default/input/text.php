@@ -1,7 +1,7 @@
 
 <!-- BEGIN YForm_Text Element -->
 <div class="yform-item yform-text<?php echo (empty($errors))? '': ' errors'; ?>">
-	<?php //echo $object->label->render(); ?>
+	<?php echo $object->label->render(); ?>
 	<input <?php echo HTML::attributes($attributes); ?>/>
 
 	<?php foreach (Arr::get($messages, 'errors', array()) as $error): ?>
