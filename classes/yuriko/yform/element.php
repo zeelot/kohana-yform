@@ -164,6 +164,11 @@ abstract class Yuriko_YForm_Element {
 		return $attributes;
 	}
 
+	public function get_attribute($key, $default = FALSE)
+	{
+		return Arr::get($this->_attributes, $key, $default);
+	}
+
 	/**
 	 * Sets a value in $_object
 	 * @TODO: probably needs to do more

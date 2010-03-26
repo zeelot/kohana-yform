@@ -13,15 +13,22 @@ class Yuriko_YForm_Field_Radio extends YForm_Element {
 	{
 		parent::__construct($name);
 
-#		$this->attributes
-#			->set('type', 'radio')
-#			->set('value', $value)
-#			->set('id', array($name.'_'.$value));
+		$this->set_attribute('type', 'radio')
+			->set_attribute('value', $value)
+			->add_id($name.'_'.$value);
+	}
 
-#		$this->label
-#			->set('text', Kohana::message('yform', 'labels.'.$value, $value))
-#			->attributes
-#				->set('for', $name.'_'.$value);
+	public function load_settings(YForm $settings = NULL)
+	{
+		parent::load_settings($settings);
+
+		$value = $this->get_attribute('value');
+
+		$this->label
+			->set_attribute('for', $this->name.'_'.$value)
+			->set('text', Kohana::message('yform', 'labels.'.$value, $value));
+
+		return $this;
 	}
 
 	/**
