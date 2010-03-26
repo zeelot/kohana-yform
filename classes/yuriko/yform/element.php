@@ -58,16 +58,22 @@ abstract class Yuriko_YForm_Element {
 	{
 		$this->_object += array
 		(
-			'name'			=> $name,
+			'name' => $name,
 		);
 
-		$this->set_attribute('name', $name);
-		$this->add_id($name);
+		$this->set_attribute('name', $name)
+			->add_id($name);
 	}
 
 	public function load_settings(YForm $settings = NULL)
 	{
-		
+		$element_name = str_replace('YForm_Field_', '', get_class($this));
+		$element_name = strtolower($element_name);
+
+		$this->set_config('view', $settings->view($element_name))
+			->set_config('theme', $settings->theme);
+
+		return $this;
 	}
 
 	/**
@@ -220,24 +226,26 @@ abstract class Yuriko_YForm_Element {
 		}
 	}
 
-	public function config($name, $value)
+	public function set_config($name, $value)
 	{
-		$this->_config[$name] = $value;
+		if (is_array($name))
+		{
+			foreach ($name as $key => $value)
+			{
+				$this->_config[$key] = $value;
+			}
+		}
+		else
+		{
+			$this->_config[$name] = $value;
+		}
 
 		return $this;
-	}
-	
-	public function configs(array $configs)
-	{
-		foreach ($configs as $key => $value)
-		{
-			$this->_config[$key] = $value;
-		}
 	}
 
 	public function set_value($value)
 	{
-		$this->attributes->set('value', $value);
+		$this->set_attribute('value', $value);
 
 		return $this;
 	}
