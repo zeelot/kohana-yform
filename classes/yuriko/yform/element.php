@@ -9,9 +9,17 @@
 
 abstract class Yuriko_YForm_Element {
 
-	protected $_config = array();
-	
-	
+	/**
+	 * The config options for this element.
+	 *
+	 * @var array
+	 */
+	protected $_config = array
+	(
+		'theme' => 'default',
+		'view' => 'default',
+	);
+
 	/**
 	 * Determines of an element has a label object automatically
 	 * created in the constructor
@@ -29,90 +37,118 @@ abstract class Yuriko_YForm_Element {
 	protected $_object = array();
 
 	/**
+	 * Attributes for this element
+	 *
+	 * @var array
+	 */
+	protected $_attributes = array
+	(
+		'id'    => array(),
+		'class' => array(),
+	);
+
+	/**
 	 * An array of YForm_Message objects organized into groups
 	 *
 	 * @var array
 	 */
 	protected $_messages = array();
 
-	public function __construct(YForm_Settings $settings, $name)
+	public function __construct($name)
 	{
 		$this->_object += array
 		(
 			'name'			=> $name,
-			// create the attributes object for this element
-			'attributes'	=> YForm_Attributes::factory()
-				->set('name', $name)
-				->add_id($name),
-		);
-		
-		if ($this->_has_label)
-		{
-			$this->_object += array
-			(
-				'label'		=> new YForm_Label($settings, $name, Kohana::message('yform', 'labels.'.$name, $name)),
-			);
-		}
-		
-		$type = strtolower(str_replace(array
-		(
-			'YForm_Field_',
-			'YForm_',
-		), '', get_class($this)));
-
-		$this->_config += array
-		(
-			'theme'		=> $settings->theme,
-			'view'		=> $settings->view($type),
 		);
 
-		$this->set_value($settings->value($name));
+		$this->set_attribute('name', $name);
+		$this->add_id($name);
+	}
 
-		$this->_messages = $settings->messages($name, array());
+	public function load_settings(YForm $settings = NULL)
+	{
+		
 	}
 
 	/**
-	 * Easy access to element properties
-	 * @TODO: probably needs to do more
+	 * Appends classes to this object
 	 *
-	 * @param string $key
-	 * @return mixed
+	 * @param mixed $class
+	 * @return self
 	 */
-	public function __get($key)
+	public function add_class($class)
 	{
-		if (isset($this->_object[$key]))
+		$this->_attributes['class'] += (array)$class;
+
+		return $this;
+	}
+
+	/**
+	 * Appends IDs to this object
+	 *
+	 * @param mixed $id
+	 * @return self
+	 */
+	public function add_id($id)
+	{
+		$this->_attributes['class'] += (array)$id;
+
+		return $this;
+	}
+
+	/**
+	 * Sets a value in $_attributes. Can take an array of values
+	 *
+	 * @param   string|array  name of variable or an array of variables
+	 * @param   mixed         value when using a named variable
+	 * @return  object
+	 */
+	public function set_attribute($name, $value = NULL)
+	{
+		if (is_array($name))
 		{
-			return $this->_object[$key];
+			foreach ($name as $key => $value)
+			{
+				$this->_attributes[$key] = $value;
+			}
 		}
 		else
 		{
-			throw new Kohana_Exception('The :property property does not exist in the :class class',
-				array(':property' => $key, ':class' => get_class($this)));
+			$this->_attributes[$name] = $value;
 		}
+
+		return $this;
 	}
 
 	/**
-	 * Magically sets a value in $_object
+	 * Returns the element's attributes in an array.
 	 *
-	 * @param string $key
-	 * @param mixed $value
-	 * @return self
+	 * @return  array
 	 */
-	public function __set($key, $value)
+	public function get_attributes()
 	{
-		$this->_object[$key] = $value;
-	}
+		$attributes = $this->_attributes;
 
-	/**
-	 * Returns a value from $_object or $default if it is not set
-	 *
-	 * @param string $key
-	 * @param mixed $default
-	 * @return mixed
-	 */
-	public function get($key, $default = FALSE)
-	{
-		return Arr::get($this->_object, $key, $default);
+		// Turn IDs and classes from arrays to strings
+		if (empty($attributes['class']))
+		{
+			unset($attributes['class']);
+		}
+		else
+		{
+			$attributes['class'] = implode(' ', $attributes['class']);
+		}
+			
+		if (empty($attributes['id']))
+		{
+			unset($attributes['id']);
+		}
+		else
+		{
+			$attributes['class'] = implode(' ', $attributes['class']);
+		}
+
+		return $attributes;
 	}
 
 	/**
@@ -140,6 +176,50 @@ abstract class Yuriko_YForm_Element {
 		return $this;
 	}
 
+	/**
+	 * Magically sets a value in $_object
+	 *
+	 * @param string $key
+	 * @param mixed $value
+	 * @return self
+	 */
+	public function __set($key, $value)
+	{
+		$this->_object[$key] = $value;
+	}
+
+	/**
+	 * Returns a value from $_object or $default if it is not set
+	 *
+	 * @param string $key
+	 * @param mixed $default
+	 * @return mixed
+	 */
+	public function get($key, $default = FALSE)
+	{
+		return Arr::get($this->_object, $key, $default);
+	}
+
+	/**
+	 * Easy access to element properties
+	 * @TODO: probably needs to do more
+	 *
+	 * @param string $key
+	 * @return mixed
+	 */
+	public function __get($key)
+	{
+		if (isset($this->_object[$key]))
+		{
+			return $this->_object[$key];
+		}
+		else
+		{
+			throw new Kohana_Exception('The :property property does not exist in the :class class',
+				array(':property' => $key, ':class' => get_class($this)));
+		}
+	}
+
 	public function config($name, $value)
 	{
 		$this->_config[$name] = $value;
@@ -153,32 +233,6 @@ abstract class Yuriko_YForm_Element {
 		{
 			$this->_config[$key] = $value;
 		}
-	}
-
-	/**
-	 * This is an alias for YForm_Attributes::set() which allows you
-	 * to change element attributes by chaining the method calls onto
-	 * the element itself.
-	 *
-	 * @param string $key
-	 * @param mixed $value
-	 * @return self
-	 */
-	public function attribute($key, $value)
-	{
-		$this->attributes->set($key, $value);
-
-		return $this;
-	}
-	
-	public function attributes(array $attributes)
-	{
-		foreach ($attributes as $key => $value)
-		{
-			$this->attributes->set($key, $value);
-		}
-
-		return $this;
 	}
 
 	public function set_value($value)
@@ -209,50 +263,9 @@ abstract class Yuriko_YForm_Element {
 	 * @param mixed $default
 	 * @return array
 	 */
-	public function messages($groups, $default = NULL)
+	public function get_messages()
 	{
-		if (is_array($groups))
-		{
-			$messages = array();
-
-			foreach ($groups as $group)
-			{
-				if (isset($this->_messages[$group]))
-				{
-					$messages = $this->_messages[$group];
-				}
-			}
-
-			return (empty($messages))? $default : $messages ;
-		}
-
-		return Arr::get($this->_messages, $groups, $default);
-	}
-
-	/**
-	 * Returns an array of YForm_Message objects for this element
-	 * Excludes any group specified in $exclude
-	 *
-	 * @param array $exclude
-	 * @return array
-	 */
-	public function messages_exclude(array $exclude = NULL)
-	{
-		if ( ! $exclude)
-		{
-			return $this->_messages;
-		}
-
-		$keys = array_diff(array_keys($this->_messages), $exclude);
-
-		$messages = array();
-
-		foreach ($keys as $key)
-		{
-			$messages = array_merge($messages, $this->_messages[$key]);
-		}
-
-		return $messages;
+		return $this->_messages;
 	}
 
 	public function __toString()
@@ -279,6 +292,8 @@ abstract class Yuriko_YForm_Element {
 	{
 		return View::factory($this->view())
 			->set('object', $this)
+			->set('attributes', $this->get_attributes())
+			->set('messages', $this->get_messages())
 			->render();
 	}
 
