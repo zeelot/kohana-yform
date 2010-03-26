@@ -97,19 +97,6 @@ abstract class Yuriko_YForm_Element {
 	}
 
 	/**
-	 * Appends IDs to this object
-	 *
-	 * @param mixed $id
-	 * @return self
-	 */
-	public function add_id($id)
-	{
-		$this->_attributes['class'] += (array)$id;
-
-		return $this;
-	}
-
-	/**
 	 * Sets a value in $_attributes. Can take an array of values
 	 *
 	 * @param   string|array  name of variable or an array of variables
@@ -142,19 +129,10 @@ abstract class Yuriko_YForm_Element {
 	{
 		$attributes = $this->_attributes;
 
-		// Turn IDs and classes from arrays to strings
+		// Turn classes from arrays to strings
 		if (empty($attributes['class']))
 		{
 			unset($attributes['class']);
-		}
-		else
-		{
-			$attributes['class'] = implode(' ', $attributes['class']);
-		}
-			
-		if (empty($attributes['id']))
-		{
-			unset($attributes['id']);
 		}
 		else
 		{
