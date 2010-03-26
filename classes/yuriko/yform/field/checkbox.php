@@ -9,11 +9,11 @@
 
 class Yuriko_YForm_Field_Checkbox extends YForm_Element {
 
-	public function __construct(YForm_Settings $settings, $name)
+	public function __construct($name)
 	{
-		parent::__construct($settings, $name);
+		parent::__construct($name);
 
-		$this->attributes->set('type', 'checkbox');
+		$this->set_attribute('type', 'checkbox');
 	}
 
 	/**
@@ -26,7 +26,7 @@ class Yuriko_YForm_Field_Checkbox extends YForm_Element {
 	{
 		if ($value !== NULL)
 		{
-			$this->attributes->set('checked', 'checked');
+			$this->set_attribute('checked', 'checked');
 		}
 
 		return $this;

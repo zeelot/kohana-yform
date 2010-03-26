@@ -9,11 +9,11 @@
 
 class Yuriko_YForm_Field_Text extends YForm_Element {
 
-	public function __construct(YForm_Settings $settings, $name)
+	public function __construct($name)
 	{
-		parent::__construct($settings, $name);
+		parent::__construct($name);
 
-		$this->attributes->set('type', 'text');
+		$this->set_attribute('type', 'text');
 	}
 	
 } // End Yuriko_YForm_Field_Text

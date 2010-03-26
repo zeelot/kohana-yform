@@ -9,21 +9,19 @@
 
 class Yuriko_YForm_Field_Radio extends YForm_Element {
 
-	public function __construct(YForm_Settings $settings, $name, $value)
+	public function __construct($name, $value)
 	{
-		parent::__construct($settings, $name);
+		parent::__construct($name);
 
-		$this->attributes
-			->set('type', 'radio')
-			->set('value', $value)
-			->set('id', array($name.'_'.$value));
+#		$this->attributes
+#			->set('type', 'radio')
+#			->set('value', $value)
+#			->set('id', array($name.'_'.$value));
 
-		$this->label
-			->set('text', Kohana::message('yform', 'labels.'.$value, $value))
-			->attributes
-				->set('for', $name.'_'.$value);
-
-		$this->set_value($settings->value($name));
+#		$this->label
+#			->set('text', Kohana::message('yform', 'labels.'.$value, $value))
+#			->attributes
+#				->set('for', $name.'_'.$value);
 	}
 
 	/**
@@ -34,11 +32,11 @@ class Yuriko_YForm_Field_Radio extends YForm_Element {
 	 */
 	public function set_value($value)
 	{
-		$this_radio = $this->attributes->get('value', NULL);
+		$this_radio = $this->get_attribute('value', NULL);
 
 		if ($this_radio AND $value === $this_radio)
 		{
-			$this->attributes->set('checked', 'checked');
+			$this->set_attribute('checked', 'checked');
 		}
 
 		return $this;

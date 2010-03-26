@@ -11,11 +11,11 @@ class Yuriko_YForm_Field_Form extends YForm_Element {
 
 	protected $_has_label = FALSE;
 
-	public function __construct(YForm_Settings $settings, $name)
+	public function __construct($name)
 	{
-		parent::__construct($settings, $name);
+		parent::__construct($name);
 
-		$this->attributes->set('type', 'text');
+		$this->set_attribute('type', 'text');
 	}
 	
 	
@@ -55,7 +55,7 @@ class Yuriko_YForm_Field_Form extends YForm_Element {
 			$attributes['method'] = 'post';
 		}
 
-		$attributes += $this->attributes->as_array();
+		$attributes += $this->get_attributes();
 
 		return View::factory($this->view())
 			->set('object', $this)

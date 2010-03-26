@@ -8,8 +8,8 @@
 
 // uses the default config group
 $form = YForm::factory('payment')
-	->values((array)$values)
-	->messages('error', (array)$errors);
+	->add_values((array)$values)
+	->add_messages('error', (array)$errors);
 ?>
 
 <?php echo $form->open(); ?>

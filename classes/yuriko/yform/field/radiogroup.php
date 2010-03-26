@@ -13,11 +13,9 @@ class Yuriko_YForm_Field_RadioGroup extends YForm_Element {
 
 	protected $_settings;
 
-	public function __construct(YForm_Settings $settings, $name)
+	public function __construct($name)
 	{
-		parent::__construct($settings, $name);
-
-		$this->_settings = $settings;
+		parent::__construct($name);
 	}
 
 	/**
