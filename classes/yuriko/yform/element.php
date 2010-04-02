@@ -64,7 +64,6 @@ abstract class Yuriko_YForm_Element {
 
 		// Namespace the ID properly if the name is something like form[name]
 		$id = preg_replace('#\[([^\[\]]++)\]#', '-\1', $name);
-		die($id);
 		$this->set_attribute('id', $id);
 	}
 
