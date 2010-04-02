@@ -43,7 +43,6 @@ abstract class Yuriko_YForm_Element {
 	 */
 	protected $_attributes = array
 	(
-		'id'    => array(),
 		'class' => array(),
 	);
 
@@ -62,7 +61,7 @@ abstract class Yuriko_YForm_Element {
 		);
 
 		$this->set_attribute('name', $name)
-			->add_id($name);
+			->set_attribute('id', $name);
 	}
 
 	public function load_settings(YForm $settings = NULL)

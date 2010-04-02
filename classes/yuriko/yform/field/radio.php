@@ -15,7 +15,7 @@ class Yuriko_YForm_Field_Radio extends YForm_Element {
 
 		$this->set_attribute('type', 'radio')
 			->set_attribute('value', $value)
-			->add_id($name.'_'.$value);
+			->set_attribute('id', $name.'_'.$value);
 	}
 
 	public function load_settings(YForm $settings = NULL)
