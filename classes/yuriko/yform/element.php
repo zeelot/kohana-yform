@@ -21,12 +21,11 @@ abstract class Yuriko_YForm_Element {
 	);
 
 	/**
-	 * Determines of an element has a label object automatically
-	 * created in the constructor
+	 * Label text for this element (not the i18n string)
 	 *
-	 * @var array
+	 * @var string
 	 */
-	protected $_has_label = TRUE;
+	protected $_label;
 
 	/**
 	 * Values directly accessible by __get()
@@ -275,6 +274,12 @@ abstract class Yuriko_YForm_Element {
 	public function get_messages()
 	{
 		return $this->_messages;
+	}
+
+	public function get_label()
+	{
+		// @TODO: i18n
+		return $this->_label;
 	}
 
 	public function __toString()
