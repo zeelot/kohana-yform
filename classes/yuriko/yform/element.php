@@ -53,6 +53,13 @@ abstract class Yuriko_YForm_Element {
 	 */
 	protected $_messages = array();
 
+	/**
+	 * The settings element (usually YForm)
+	 *
+	 * @var object
+	 */
+	protected $_settings;
+
 	public function __construct($name)
 	{
 		$this->_object += array
@@ -67,9 +74,11 @@ abstract class Yuriko_YForm_Element {
 		$this->set_attribute('id', $id);
 	}
 
-	public function load_settings(YForm $settings = NULL)
+	public function load_settings(YForm &$settings = NULL)
 	{
-		$this->set_config('view', $settings->view($this->element_name()))
+		$this->_settings = $settings;
+
+		$this->set_config('view', $settings->view($this->type()))
 			->set_config('theme', $settings->theme);
 
 		if ($this->_has_label)
@@ -80,7 +89,7 @@ abstract class Yuriko_YForm_Element {
 		return $this;
 	}
 
-	protected function element_name()
+	protected function type()
 	{
 		return strtolower(str_replace('YForm_Field_', '', get_class($this)));
 	}
