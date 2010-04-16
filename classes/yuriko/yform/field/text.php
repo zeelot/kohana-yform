@@ -7,6 +7,8 @@
  */
 class Yuriko_YForm_Field_Text extends YForm_Element {
 
+	protected $_view = 'input/text';
+
 	public function __construct($name)
 	{
 		parent::__construct($name);

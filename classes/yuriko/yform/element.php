@@ -11,21 +11,18 @@ abstract class Yuriko_YForm_Element {
 
 	/**
 	 * The config options for this element.
-	 *
-	 * @var array
 	 */
-	protected $_config = array
-	(
-		'theme' => 'default',
-		'view' => 'default',
-	);
+	protected $_theme = 'default';
+	protected $_view  = 'element';
 
 	/**
 	 * Label text for this element (not the i18n string)
 	 *
 	 * @var string
 	 */
+	protected $_has_label = TRUE;
 	protected $_label;
+	protected $_name;
 
 	/**
 	 * Values directly accessible by __get()
@@ -61,36 +58,18 @@ abstract class Yuriko_YForm_Element {
 
 	public function __construct($name)
 	{
-		$this->_object += array
-		(
-			'name' => $name,
-		);
+		$this->_name = $name;
+
+		if ($this->_has_label === TRUE)
+		{
+			$this->_label = preg_replace('#\[([^\[\]]++)\]#', '.\1', $name);
+		}
 
 		$this->set_attribute('name', $name);
 
 		// Namespace the ID properly if the name is something like form[name]
 		$id = preg_replace('#\[([^\[\]]++)\]#', '-\1', $name);
 		$this->set_attribute('id', $id);
-	}
-
-	public function load_settings(YForm &$settings = NULL)
-	{
-		$this->_settings = $settings;
-
-		$this->set_config('view', $settings->view($this->type()))
-			->set_config('theme', $settings->theme);
-
-		if ($this->_has_label)
-		{
-			$this->label = $settings->label($this->get_attribute('id'), $this->name);
-		}
-
-		return $this;
-	}
-
-	protected function type()
-	{
-		return strtolower(str_replace('YForm_Field_', '', get_class($this)));
 	}
 
 	/**
@@ -278,8 +257,9 @@ abstract class Yuriko_YForm_Element {
 
 	public function get_label()
 	{
-		// @TODO: i18n
-		return $this->_label;
+		return ($this->_has_label === TRUE)
+			? Kohana::message('yform/labels', $this->_label, $this->_label)
+			: FALSE;
 	}
 
 	public function __toString()
@@ -308,6 +288,7 @@ abstract class Yuriko_YForm_Element {
 			->set('object', $this)
 			->set('attributes', $this->get_attributes())
 			->set('messages', $this->get_messages())
+			->set('label', $this->get_label())
 			->render();
 	}
 
@@ -318,7 +299,7 @@ abstract class Yuriko_YForm_Element {
 	 */
 	public function view()
 	{
-		return 'yform/themes/'.$this->_config['theme'].'/'.$this->_config['view'];
+		return 'yform/themes/'.$this->_theme.'/'.$this->_view;
 	}
 
 } // End Yuriko_YForm_Element
