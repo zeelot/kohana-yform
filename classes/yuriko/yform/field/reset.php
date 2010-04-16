@@ -5,13 +5,13 @@
  * @copyright  (c) 2008-2010 Lorenzo Pisani
  * @license    http://yurikocms.com/license
  */
-class Yuriko_YForm_Field_Submit extends YForm_Element {
+class Yuriko_YForm_Field_Reset extends YForm_Element {
 
 	public function __construct($name)
 	{
 		parent::__construct($name);
 
-		$this->set_attribute('type', 'submit');
+		$this->set_attribute('type', 'reset');
 	}
 	
-} // End Yuriko_YForm_Field_Submit
+} // End Yuriko_YForm_Field_Reset
