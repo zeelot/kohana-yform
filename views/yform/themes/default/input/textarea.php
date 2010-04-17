@@ -1,7 +1,10 @@
 
 <!-- BEGIN YForm_Textarea Element -->
 <div class="yform-item yform-textarea<?php echo empty($errors) ? '' : ' errors'; ?>">
-	<?php echo $object->label->render(); ?>
+	<?php if ( ! empty($label)): ?>
+		<label for="<?php echo Arr::get($attributes, 'id'); ?>" ><?php echo $label; ?></label>
+	<?php endif; ?>
+
 	<textarea <?php echo HTML::attributes($attributes); ?>><?php echo $object->value; ?></textarea>
 
 	<?php foreach (Arr::get($messages, 'errors', array()) as $error): ?>

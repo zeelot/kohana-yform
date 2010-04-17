@@ -7,6 +7,8 @@
  */
 class Yuriko_YForm_Field_Button extends YForm_Element {
 
+	protected $_view = 'button/button';
+
 	public function __construct($name)
 	{
 		parent::__construct($name);

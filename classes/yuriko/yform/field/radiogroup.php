@@ -7,6 +7,8 @@
  */
 class Yuriko_YForm_Field_RadioGroup extends YForm_Element {
 
+	protected $_view = 'choice/radioGroup';
+
 	protected $_options = array();
 
 	protected $_settings;
@@ -33,9 +35,9 @@ class Yuriko_YForm_Field_RadioGroup extends YForm_Element {
 	{
 		foreach ($options as $value => $name)
 		{
-			$this->_options[$value] = new YForm_Field_Radio($this->_settings, $name, $value);
+			// @TODO: fix settings
+			$this->_options[$value] = new YForm_Field_Radio($name, $value);
 		}
-
 		return $this;
 	}
 
@@ -43,5 +45,4 @@ class Yuriko_YForm_Field_RadioGroup extends YForm_Element {
 	{
 		return $this->_options;
 	}
-	
 } // End Yuriko_YForm_Field_Text

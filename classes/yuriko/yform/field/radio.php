@@ -7,13 +7,15 @@
  */
 class Yuriko_YForm_Field_Radio extends YForm_Element {
 
+	protected $_view = 'input/radio';
+
 	public function __construct($name, $value)
 	{
 		parent::__construct($name);
 
 		$this->set_attribute('type', 'radio')
 			->set_attribute('value', $value)
-			->set_attribute('id', $name.'_'.$value);
+			->set_attribute('id', $this->get_attribute('id').'_'.$value);
 	}
 
 	public function load_settings(YForm $settings = NULL)

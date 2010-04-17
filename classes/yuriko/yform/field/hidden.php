@@ -7,11 +7,16 @@
  */
 class Yuriko_YForm_Field_Hidden extends YForm_Element {
 
-	public function __construct($name)
+	protected $_has_label = FALSE;
+
+	protected $_view = 'input/hidden';
+
+	public function __construct($name, $value)
 	{
 		parent::__construct($name);
 
-		$this->set_attribute('type', 'hidden');
+		$this->set_attribute('type', 'hidden')
+			->set_value($value);
 	}
 	
 } // End Yuriko_YForm_Field_Hidden

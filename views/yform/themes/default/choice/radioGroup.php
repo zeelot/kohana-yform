@@ -1,7 +1,11 @@
 
 <!-- BEGIN YForm_RadioGroup Element -->
 <fieldset class="yform-item yform-radioGroup">
-	<legend><?php echo $object->label->text; ?></legend>
+
+	<?php if( ! empty($label)): ?>
+		<legend><?php echo $label; ?></legend>
+	<?php endif; ?>
+
 	<?php foreach ($object->options() as $option): ?>
 	<?php echo $option; ?>
 	<?php endforeach; ?>

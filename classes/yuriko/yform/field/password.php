@@ -7,6 +7,8 @@
  */
 class Yuriko_YForm_Field_Password extends YForm_Element {
 
+	protected $_view = 'input/password';
+
 	public function __construct($name)
 	{
 		parent::__construct($name);
