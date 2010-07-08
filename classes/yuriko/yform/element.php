@@ -43,7 +43,7 @@ abstract class Yuriko_YForm_Element {
 	);
 
 	/**
-	 * An array of YForm_Message objects organized into groups
+	 * An array of messages organized into groups
 	 *
 	 * @var array
 	 */
@@ -72,9 +72,16 @@ abstract class Yuriko_YForm_Element {
 		$this->set_attribute('id', $id);
 	}
 
-	public function load_settings($settings)
+	public function load_settings(YForm $settings)
 	{
-		
+		// Store for later use
+		$this->_settings = $settings;
+
+		$this->set_attribute('value', $settings->get_value($this->_name, ''));
+
+		$this->_messages = Arr::merge($this->_messages, $settings->get_messages($this->_name, array()));
+
+		return $this;
 	}
 
 	/**
@@ -241,15 +248,15 @@ abstract class Yuriko_YForm_Element {
 	 * @param YForm_Message $message
 	 * @return self
 	 */
-	public function add_message(YForm_Message $message)
+	public function add_message($group, $message)
 	{
-		$this->_messages[$message->group][] = $message;
+		$this->_messages[$group][] = $message;
 
 		return $this;
 	}
 
 	/**
-	 * Returns the YForm_Message objects in $group or $default if none are set
+	 * Returns the messages in $group or $default if none are set
 	 *
 	 * @param string|array $groups
 	 * @param mixed $default
