@@ -72,6 +72,11 @@ abstract class Yuriko_YForm_Element {
 		$this->set_attribute('id', $id);
 	}
 
+	public function load_settings($settings)
+	{
+		
+	}
+
 	/**
 	 * Appends classes to this object
 	 *
