@@ -2,11 +2,10 @@
 
 return array
 (
-	'hello'     => array
-	(
-		'world'    => __('World'),
-	),
-	'name'		=> __('Name'),
-	'submit'	=> __('Submit'),
-	'remember'	=> __('Remember Me'),
+	'name'      => __('Name'),
+	'submit'    => __('Submit'),
+	'remember'  => __('Remember Me'),
+	'username'  => __('Username'),
+	'password'  => __('Password'),
+	'login'     => __('Login'),
 );

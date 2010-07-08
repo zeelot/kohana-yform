@@ -9,6 +9,8 @@ class Yuriko_YForm_Field_Form extends YForm_Element {
 
 	protected $_has_label = FALSE;
 
+	protected $_view  = 'form';
+
 	public function __construct($name)
 	{
 		parent::__construct($name);
