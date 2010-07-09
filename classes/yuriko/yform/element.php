@@ -77,7 +77,7 @@ abstract class Yuriko_YForm_Element {
 		// Store for later use
 		$this->_settings = $settings;
 
-		$this->set_attribute('value', $settings->get_value($this->_name, ''));
+		$this->set_attribute('value', $settings->get_value($this->_name, $this->get_attribute('value', '')));
 
 		$this->_messages = Arr::merge($this->_messages, $settings->get_messages($this->_name, array()));
 
