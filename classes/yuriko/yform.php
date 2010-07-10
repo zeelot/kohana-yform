@@ -85,10 +85,7 @@ class Yuriko_YForm {
 	 */
 	public function add_messages($group, array $messages)
 	{
-		foreach ($messages as $field => $message)
-		{
-			$this->_messages[$field][$group][] = $message;
-		}
+		$this->_messages[$group] = Arr::merge(Arr::get($this->_messages, $group, array()), $messages);
 
 		return $this;
 	}
@@ -96,13 +93,24 @@ class Yuriko_YForm {
 	/**
 	 * Returns all the messages for a field or $default if it is not set
 	 *
-	 * @param string $field
+	 * @param string $path
 	 * @param mixed $default
 	 * @return mixed
 	 */
-	public function get_messages($field, $default = FALSE)
+	public function get_messages($path, $default = FALSE)
 	{
-		return Arr::get($this->_messages, $field, $default);
+		$messages = array();
+
+		foreach ($this->_messages as $group => $msgs)
+		{
+			if (($msg = Arr::path($msgs, $path)) !== NULL)
+			{
+				// They should always be arrays
+				$messages[$group] = (array)$msg;
+			}
+		}
+
+		return (count($messages) > 0) ? $messages : $default;
 	}
 
 	/**

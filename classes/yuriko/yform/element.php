@@ -79,7 +79,8 @@ abstract class Yuriko_YForm_Element {
 
 		$this->set_attribute('value', $settings->get_value($this->_name, $this->get_attribute('value', '')));
 
-		$this->_messages = Arr::merge($this->_messages, $settings->get_messages($this->_name, array()));
+		// Using the dot-notated label to grab messages
+		$this->_messages = Arr::merge($this->_messages, $settings->get_messages($this->_label, array()));
 
 		return $this;
 	}
@@ -269,9 +270,32 @@ abstract class Yuriko_YForm_Element {
 
 	public function get_label()
 	{
-		return ($this->_has_label === TRUE)
-			? Kohana::message('yform/labels', $this->_label, $this->_label)
-			: FALSE;
+		if ( ! $this->_has_label)
+			return FALSE;
+
+		if ($label = Kohana::message('yform/labels', $this->_label))
+		{
+			// Found the label defined in the most granular location
+		}
+		else
+		{
+			// Travel in towards to field to find the nearest match
+			$segments = explode('.', $this->_label);
+			// Already tried the full path, shift the first element out
+			array_shift($segments);
+
+			while (count($segments) > 0)
+			{
+				if ($label = Kohana::message('yform/labels', implode('.', $segments)))
+					break;
+
+				// Keep shifting the array until we run out of attempts
+				array_shift($segments);
+			}
+		}
+
+		// Return the possible match or the label (path) unmodified
+		return $label ? $label : $this->_label;
 	}
 
 	public function __toString()
