@@ -23,6 +23,7 @@ abstract class Yuriko_YForm_Element {
 	protected $_has_label = TRUE;
 	protected $_label;
 	protected $_name;
+	protected $_path;
 
 	/**
 	 * Values directly accessible by __get()
@@ -60,9 +61,10 @@ abstract class Yuriko_YForm_Element {
 	{
 		$this->_name = $name;
 
+		$this->_path = preg_replace('#\[([^\[\]]++)\]#', '.\1', $name);
 		if ($this->_has_label === TRUE)
 		{
-			$this->_label = preg_replace('#\[([^\[\]]++)\]#', '.\1', $name);
+			$this->_label = $this->_path;
 		}
 
 		$this->set_attribute('name', $name);
@@ -77,11 +79,14 @@ abstract class Yuriko_YForm_Element {
 		// Store for later use
 		$this->_settings = $settings;
 
-		// Using the dot-notated label to grab the value
-		$this->set_attribute('value', $settings->get_value($this->_label, $this->get_attribute('value', '')));
+		// Using the dot-notated path to grab the value
+		if ($settings->get_value($this->_path))
+		{
+			$this->set_value($settings->get_value($this->_path));
+		}
 
-		// Using the dot-notated label to grab messages
-		$this->_messages = Arr::merge($this->_messages, $settings->get_messages($this->_label, array()));
+		// Using the dot-notated path to grab messages
+		$this->_messages = Arr::merge($this->_messages, $settings->get_messages($this->_path, array()));
 
 		return $this;
 	}
@@ -267,6 +272,12 @@ abstract class Yuriko_YForm_Element {
 	public function get_messages()
 	{
 		return $this->_messages;
+	}
+
+	public function set_label($label)
+	{
+		$this->_label = $label;
+		return $this;
 	}
 
 	public function get_label()
