@@ -5,7 +5,9 @@
  * @copyright  (c) 2008-2010 Lorenzo Pisani
  * @license    http://yurikocms.com/license
  */
-class Yuriko_YForm_Field_RadioGroup extends YForm_Element {
+class Yuriko_YForm_Field_RadioGroup extends YForm_Field_Group {
+
+	protected $_has_label = TRUE;
 
 	protected $_view = 'choice/radioGroup';
 
@@ -18,27 +20,38 @@ class Yuriko_YForm_Field_RadioGroup extends YForm_Element {
 		parent::__construct($name);
 	}
 
-	/**
-	 * Overwrites this method to check the box if $value is anything but NULL
-	 *
-	 * @param mixed $value
-	 * @return self
-	 */
-	public function set_value($value)
-	{
-		
-
-		return $this;
-	}
-
 	public function add_options(array $options)
 	{
 		foreach ($options as $value => $name)
 		{
-			// @TODO: fix settings
-			$this->_options[$value] = new YForm_Field_Radio($name, $value);
+			$this->_options[$value] = $this->radio($this->_name, $value)
+				->set_attribute('name', $this->_name)
+				->set_label($name);
 		}
 		return $this;
+	}
+
+	/**
+	 * Returns an instance of an element
+	 * Extends the Group version as to not append the radio value
+	 *
+	 * @param string $method
+	 * @param array $args
+	 * @return object
+	 */
+	public function __call($method, $args)
+	{
+		// Element name is always first
+		array_shift($args);
+
+		// Push the new name back onto the front of $args
+		array_unshift($args, $this->_name);
+
+		return ($this->_settings !== NULL)
+			// Use the above settings object to create our element
+			? $this->_settings->__call($method, $args)
+			// We are creating elements without a form object
+			: YForm::create_element($method, $args);
 	}
 
 	public function options()

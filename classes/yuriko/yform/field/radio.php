@@ -18,19 +18,6 @@ class Yuriko_YForm_Field_Radio extends YForm_Element {
 			->set_attribute('id', $this->get_attribute('id').'_'.$value);
 	}
 
-	public function load_settings(YForm $settings = NULL)
-	{
-		parent::load_settings($settings);
-
-		$value = $this->get_attribute('value');
-
-		$this->label
-			->set_attribute('for', $this->name.'_'.$value)
-			->set('text', Kohana::message('yform', 'labels.'.$value, $value));
-
-		return $this;
-	}
-
 	/**
 	 * Overwrites this method to check the box if $value is anything but NULL
 	 *
@@ -41,7 +28,7 @@ class Yuriko_YForm_Field_Radio extends YForm_Element {
 	{
 		$this_radio = $this->get_attribute('value', NULL);
 
-		if ($this_radio AND $value === $this_radio)
+		if ($this_radio AND (string)$value === (string)$this_radio)
 		{
 			$this->set_attribute('checked', 'checked');
 		}
