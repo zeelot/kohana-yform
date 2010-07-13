@@ -40,8 +40,11 @@ class Yuriko_YForm_Field_Group extends YForm_Element {
 		// Push the new name back onto the front of $args
 		array_unshift($args, $name);
 
-		// Use the above settings object to create our element
-		return $this->_settings->__call($method, $args);
+		return ($this->_settings !== NULL)
+			// Use the above settings object to create our element
+			? $this->_settings->__call($method, $args)
+			// We are creating elements without a form object
+			: YForm::create_element($method, $args);
 	}
 
 	/**
