@@ -140,9 +140,9 @@ class Yuriko_YForm {
 	 * @param mixed $default
 	 * @return mixed
 	 */
-	public function get_value($field, $default = FALSE)
+	public function get_value($path, $default = FALSE)
 	{
-		return Arr::get($this->_values, $field, $default);
+		return Arr::path($this->_values, $path, $default);
 	}
 
 	/**

@@ -77,7 +77,8 @@ abstract class Yuriko_YForm_Element {
 		// Store for later use
 		$this->_settings = $settings;
 
-		$this->set_attribute('value', $settings->get_value($this->_name, $this->get_attribute('value', '')));
+		// Using the dot-notated label to grab the value
+		$this->set_attribute('value', $settings->get_value($this->_label, $this->get_attribute('value', '')));
 
 		// Using the dot-notated label to grab messages
 		$this->_messages = Arr::merge($this->_messages, $settings->get_messages($this->_label, array()));
