@@ -10,6 +10,27 @@
 class Yuriko_YForm {
 
 	/**
+	 * Returns an instance of a form field
+	 *
+	 * @param   string $field
+	 * @param   array  $args
+	 * @return  object
+	 */
+	public static function create_element($field, $args)
+	{
+		$element = 'YForm_Field_'.ucfirst($field);
+
+		$class = new ReflectionClass($element);
+
+		return $class->newInstanceArgs($args);
+	}
+
+	public static function factory($name = NULL, $group = 'default')
+	{
+		return new YForm($name, $group);
+	}
+
+	/**
 	 * Settings for elements created by this object
 	 *
 	 * @var array
@@ -40,11 +61,6 @@ class Yuriko_YForm {
 	 */
 	protected $_form;
 
-	public static function factory($name = NULL, $group = 'default')
-	{
-		return new YForm($name, $group);
-	}
-
 	public function __construct($name = NULL, $group = 'default')
 	{
 		$config = Kohana::config('yform.'.$group);
@@ -62,11 +78,7 @@ class Yuriko_YForm {
 	 */
 	public function __call($method, $args)
 	{
-		$element = 'YForm_Field_'.ucfirst($method);
-
-		$class = new ReflectionClass($element);
-
-		$instance = $class->newInstanceArgs($args);
+		$instance = self::create_element($method, $args);
 
 		// Load settings from this form object
 		$instance->load_settings($this);
