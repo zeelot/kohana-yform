@@ -14,8 +14,6 @@ class Yuriko_YForm_Field_Form extends YForm_Element {
 	public function __construct($name)
 	{
 		parent::__construct($name);
-
-		$this->set_attribute('type', 'text');
 	}
 	
 	
