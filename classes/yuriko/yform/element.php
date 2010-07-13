@@ -224,23 +224,6 @@ abstract class Yuriko_YForm_Element {
 		}
 	}
 
-	public function set_config($name, $value)
-	{
-		if (is_array($name))
-		{
-			foreach ($name as $key => $value)
-			{
-				$this->_config[$key] = $value;
-			}
-		}
-		else
-		{
-			$this->_config[$name] = $value;
-		}
-
-		return $this;
-	}
-
 	public function set_value($value)
 	{
 		$this->set_attribute('value', $value);
