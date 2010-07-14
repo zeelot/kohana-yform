@@ -5,7 +5,7 @@
 		<label for="<?php echo Arr::get($attributes, 'id'); ?>" ><?php echo $label; ?></label>
 	<?php endif; ?>
 
-	<textarea <?php echo HTML::attributes($attributes); ?>><?php echo $object->value; ?></textarea>
+	<textarea <?php echo HTML::attributes($attributes); ?>><?php echo HTML::chars($object->value); ?></textarea>
 
 	<?php foreach (Arr::get($messages, 'errors', array()) as $error): ?>
 		<div class="error"><?php echo $error; ?></div>
