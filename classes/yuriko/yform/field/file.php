@@ -4,9 +4,8 @@
  * @author     Lorenzo Pisani - Zeelot
  * @copyright  (c) 2008-2010 Lorenzo Pisani
  * @license    http://yurikocms.com/license
- * @deprecated will be removed in 2.0, use the file field
  */
-class Yuriko_YForm_Field_Upload extends YForm_Element {
+class Yuriko_YForm_Field_File extends YForm_Element {
 
 	protected $_view = 'input/upload';
 
@@ -17,4 +16,4 @@ class Yuriko_YForm_Field_Upload extends YForm_Element {
 		$this->set_attribute('type', 'file');
 	}
 	
-} // End Yuriko_YForm_Field_Upload
+} // End Yuriko_YForm_Field_File
