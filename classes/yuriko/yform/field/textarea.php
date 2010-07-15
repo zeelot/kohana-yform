@@ -13,7 +13,10 @@ class Yuriko_YForm_Field_Textarea extends YForm_Element {
 	{
 		parent::__construct($name);
 
-		$this->set_attribute('type', 'textarea');
+		$this->set_attribute('type', 'textarea')
+			// Textareas should have a default rows and cols attribute
+			->set_attribute('rows', '10')
+			->set_attribute('cols', '50');
 	}
 	
 	public function render()
