@@ -80,7 +80,7 @@ abstract class Yuriko_YForm_Element {
 		$this->_settings = $settings;
 
 		// Using the dot-notated path to grab the value
-		if ($settings->get_value($this->_path))
+		if ($settings->get_value($this->_path) !== FALSE)
 		{
 			$this->set_value($settings->get_value($this->_path));
 		}
