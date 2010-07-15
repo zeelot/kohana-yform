@@ -6,7 +6,7 @@
 		<label for="<?php echo Arr::get($attributes, 'id'); ?>" ><?php echo $label; ?></label>
 	<?php endif; ?>
 
-	<select <?php echo HTML::attributes($attributes); ?>/>
+	<select <?php echo HTML::attributes($attributes); ?>>
 	<?php foreach ($object->options() as $value => $name): ?>
 	<option value="<?php echo HTML::chars($value); ?>" <?php echo ((string)$value === (string)Arr::get($attributes, 'value'))? 'selected="selected"' : NULL; ?>><?php echo HTML::chars($name); ?></option>
 	<?php endforeach; ?>
