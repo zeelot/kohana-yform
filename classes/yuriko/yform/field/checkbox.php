@@ -24,7 +24,7 @@ class Yuriko_YForm_Field_Checkbox extends YForm_Element {
 	 */
 	public function set_value($value)
 	{
-		if ($value !== NULL)
+		if ($value)
 		{
 			$this->set_attribute('checked', 'checked');
 		}
