@@ -158,17 +158,6 @@ class Yuriko_YForm {
 	}
 
 	/**
-	 * Returns the path to the view in the current theme (defined by settings)
-	 *
-	 * @param string $element - the element name
-	 * @return string
-	 */
-	public function view($element)
-	{
-		return $this->_settings['views'][$element];
-	}
-
-	/**
 	 * Sets a value into the _settings array
 	 *
 	 * @param string $key
