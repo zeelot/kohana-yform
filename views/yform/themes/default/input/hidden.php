@@ -1,6 +1,6 @@
 
 <!-- BEGIN YForm_Hidden Element -->
-<div class="yform-item yform-hidden" id="<?php echo Arr::get($attributes, 'id'); ?>-container">
+<div class="yform-item yform-hidden<?php echo empty($errors) ? '' : ' errors'; ?>" id="<?php echo Arr::get($attributes, 'id'); ?>-container">
 	<input <?php echo HTML::attributes($attributes); ?>/>
 
 	<?php foreach ($messages as $type => $array): ?>

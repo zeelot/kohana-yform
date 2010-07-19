@@ -1,6 +1,6 @@
 
 <!-- BEGIN YForm_Reset Element -->
-<div class="yform-item yform-reset" id="<?php echo Arr::get($attributes, 'id'); ?>-container">
+<div class="yform-item yform-reset<?php echo empty($errors) ? '' : ' errors'; ?>" id="<?php echo Arr::get($attributes, 'id'); ?>-container">
 	<button <?php echo HTML::attributes($attributes); ?>><?php echo (empty($label))?'':$label; ?></button>
 
 	<?php foreach ($messages as $type => $array): ?>
