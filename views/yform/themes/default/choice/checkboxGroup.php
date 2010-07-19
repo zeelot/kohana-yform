@@ -1,6 +1,6 @@
 
 <!-- BEGIN YForm_CheckboxGroup Element -->
-<fieldset class="yform-item yform-checkboxGroup">
+<fieldset class="yform-item yform-checkboxGroup" id="<?php echo Arr::get($attributes, 'id'); ?>-container">
 
 	<?php if( ! empty($label)): ?>
 		<legend>

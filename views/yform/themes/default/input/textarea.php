@@ -1,6 +1,6 @@
 
 <!-- BEGIN YForm_Textarea Element -->
-<div class="yform-item yform-textarea<?php echo empty($errors) ? '' : ' errors'; ?>">
+<div class="yform-item yform-textarea<?php echo empty($errors) ? '' : ' errors'; ?>" id="<?php echo Arr::get($attributes, 'id'); ?>-container">
 	<?php if ( ! empty($label)): ?>
 		<label for="<?php echo Arr::get($attributes, 'id'); ?>" >
 			<?php echo $label; ?>
