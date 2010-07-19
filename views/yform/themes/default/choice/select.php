@@ -1,6 +1,6 @@
 
 <!-- BEGIN YForm_Select Element -->
-<div class="yform-item yform-password<?php echo empty($errors) ? '' : ' errors'; ?>">
+<div class="yform-item yform-select<?php echo empty($errors) ? '' : ' errors'; ?>">
 
 	<?php if ( ! empty($label)): ?>
 		<label for="<?php echo Arr::get($attributes, 'id'); ?>" >
