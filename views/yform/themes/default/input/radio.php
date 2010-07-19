@@ -1,6 +1,6 @@
 
 <!-- BEGIN YForm_Radio Element -->
-<div class="yform-item yform-radio<?php echo empty($errors) ? '' : ' errors'; ?>" id="<?php echo Arr::get($attributes, 'id'); ?>-container">	
+<div class="yform-item yform-radio<?php echo empty($errors) ? '' : ' has-errors'; ?>" id="<?php echo Arr::get($attributes, 'id'); ?>-container">	
 	<input <?php echo HTML::attributes($attributes); ?>/>
 	<?php if ( ! empty($label)): ?>
 		<label for="<?php echo Arr::get($attributes, 'id'); ?>" ><?php echo $label; ?></label>

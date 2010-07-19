@@ -1,6 +1,6 @@
 
 <!-- BEGIN YForm_RadioGroup Element -->
-<fieldset class="yform-item yform-radioGroup<?php echo empty($errors) ? '' : ' errors'; ?>" id="<?php echo Arr::get($attributes, 'id'); ?>-container">
+<fieldset class="yform-item yform-radioGroup<?php echo empty($errors) ? '' : ' has-errors'; ?>" id="<?php echo Arr::get($attributes, 'id'); ?>-container">
 
 	<?php if( ! empty($label)): ?>
 		<legend>

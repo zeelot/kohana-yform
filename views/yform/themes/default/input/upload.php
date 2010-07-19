@@ -1,6 +1,6 @@
 
 <!-- BEGIN YForm_Upload Element -->
-<div class="yform-item yform-upload<?php echo empty($errors) ? '' : ' errors'; ?>" id="<?php echo Arr::get($attributes, 'id'); ?>-container">
+<div class="yform-item yform-upload<?php echo empty($errors) ? '' : ' has-errors'; ?>" id="<?php echo Arr::get($attributes, 'id'); ?>-container">
 
 	<?php if ( ! empty($label)): ?>
 		<label for="<?php echo Arr::get($attributes, 'id'); ?>" >

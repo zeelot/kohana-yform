@@ -1,6 +1,6 @@
 
 <!-- BEGIN YForm_Text Element -->
-<div class="yform-item yform-text<?php echo empty($errors) ? '' : ' errors'; ?>" id="<?php echo Arr::get($attributes, 'id'); ?>-container">
+<div class="yform-item yform-text<?php echo empty($errors) ? '' : ' has-errors'; ?>" id="<?php echo Arr::get($attributes, 'id'); ?>-container">
 
 	<?php if ( ! empty($label)): ?>
 		<label for="<?php echo Arr::get($attributes, 'id'); ?>" >
