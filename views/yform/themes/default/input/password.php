@@ -2,7 +2,14 @@
 <!-- BEGIN YForm_Password Element -->
 <div class="yform-item yform-password<?php echo empty($errors) ? '' : ' errors'; ?>">
 	<?php if ( ! empty($label)): ?>
-		<label for="<?php echo Arr::get($attributes, 'id'); ?>" ><?php echo $label; ?></label>
+		<label for="<?php echo Arr::get($attributes, 'id'); ?>" >
+			<?php echo $label; ?>
+			<?php if ($object->get('required') !== FALSE): ?>
+
+				<span class="required"><?php echo ($object->required === TRUE)?'*':$object->required; ?></span>
+
+			<?php endif; ?>
+		</label>
 	<?php endif; ?>
 
 	<input <?php echo HTML::attributes($attributes); ?>/>

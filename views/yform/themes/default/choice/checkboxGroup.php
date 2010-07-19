@@ -3,7 +3,14 @@
 <fieldset class="yform-item yform-checkboxGroup">
 
 	<?php if( ! empty($label)): ?>
-		<legend><?php echo $label; ?></legend>
+		<legend>
+			<?php echo $label; ?>
+			<?php if ($object->get('required') !== FALSE): ?>
+
+				<span class="required"><?php echo ($object->required === TRUE)?'*':$object->required; ?></span>
+
+			<?php endif; ?>
+		</legend>
 	<?php endif; ?>
 
 	<?php foreach ($object->options() as $option): ?>
