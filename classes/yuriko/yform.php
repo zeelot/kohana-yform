@@ -60,13 +60,15 @@ class Yuriko_YForm {
 	 * @var object
 	 */
 	protected $_form;
+	protected $_name;
 
 	public function __construct($name = NULL, $group = 'default')
 	{
 		$config = Kohana::config('yform.'.$group);
 		$this->_settings = array_merge($this->_settings, $config);
 
-		$this->_form = $this->form($name);
+		// Store the name for when we create the form element in open()
+		$this->_name = $name;
 	}
 
 	/**
@@ -201,6 +203,8 @@ class Yuriko_YForm {
 	 */
 	public function open($action = NULL, array $attributes = array())
 	{
+		// Create the form element before rendering it
+		$this->_form = $this->form($this->_name);
 		return $this->_form->open($action, $attributes);
 	}
 
