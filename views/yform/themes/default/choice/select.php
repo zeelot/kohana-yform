@@ -15,7 +15,7 @@
 
 	<select <?php echo HTML::attributes($attributes); ?>>
 	<?php foreach ($object->options() as $value => $name): ?>
-	<option value="<?php echo HTML::chars($value); ?>" <?php echo ((string)$value === (string)Arr::get($attributes, 'value'))? 'selected="selected"' : NULL; ?>><?php echo HTML::chars($name); ?></option>
+	<option value="<?php echo HTML::chars($value); ?>" <?php echo ((string)$value === (string)Arr::get($attributes, 'value'))? 'selected="selected"' : NULL; ?> <?= HTML::attributes($object->option_attributes($value)); ?>><?php echo HTML::chars($name); ?></option>
 	<?php endforeach; ?>
 	</select>
 

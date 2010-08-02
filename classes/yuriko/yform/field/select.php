@@ -12,6 +12,7 @@ class Yuriko_YForm_Field_Select extends YForm_Element {
 	protected $_view = 'choice/select';
 
 	protected $_options = array();
+	protected $_option_attributes = array();
 
 	protected $_settings;
 
@@ -20,11 +21,17 @@ class Yuriko_YForm_Field_Select extends YForm_Element {
 		parent::__construct($name);
 	}
 
+	public function add_option($value, $name, array $attributes = array())
+	{
+		$this->_options[$value] = $name;
+		$this->_option_attributes[$value] = $attributes;
+	}
+
 	public function add_options(array $options)
 	{
 		foreach ($options as $value => $name)
 		{
-			$this->_options[$value] = $name;
+			$this->add_option($value, $name);
 		}
 		return $this;
 	}
@@ -32,5 +39,10 @@ class Yuriko_YForm_Field_Select extends YForm_Element {
 	public function options()
 	{
 		return $this->_options;
+	}
+
+	public function option_attributes($value)
+	{
+		return Arr::get($this->_option_attributes, $value, array());
 	}
 } // End Yuriko_YForm_Field_Select
