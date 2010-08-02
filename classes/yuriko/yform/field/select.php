@@ -25,6 +25,8 @@ class Yuriko_YForm_Field_Select extends YForm_Element {
 	{
 		$this->_options[$value] = $name;
 		$this->_option_attributes[$value] = $attributes;
+
+		return $this;
 	}
 
 	public function add_options(array $options)
