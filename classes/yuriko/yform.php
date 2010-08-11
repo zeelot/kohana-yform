@@ -141,7 +141,7 @@ class Yuriko_YForm {
 
 		foreach ($args as $array)
 		{
-			$this->_values = array_merge($this->_values, $array);
+			$this->_values = Arr::merge($this->_values, $array);
 		}
 
 		return $this;
