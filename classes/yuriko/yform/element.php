@@ -69,9 +69,12 @@ abstract class Yuriko_YForm_Element {
 
 		$this->set_attribute('name', $name);
 
-		// Namespace the ID properly if the name is something like form[name]
-		$id = preg_replace('#\[([^\[\]]++)\]#', '-\1', $name);
-		$this->set_attribute('id', $id);
+		if ( ! empty($name))
+		{
+			// Namespace the ID properly if the name is something like form[name]
+			$id = preg_replace('#\[([^\[\]]++)\]#', '-\1', $name);
+			$this->set_attribute('id', $id);
+		}
 	}
 
 	public function load_settings(YForm $settings)
