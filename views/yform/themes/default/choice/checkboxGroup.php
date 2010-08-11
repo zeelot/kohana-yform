@@ -3,14 +3,7 @@
 <fieldset class="yform-item yform-checkboxGroup<?php echo empty($errors) ? '' : ' has-errors'; ?>" id="<?php echo Arr::get($attributes, 'id'); ?>-container">
 
 	<?php if( ! empty($label)): ?>
-		<legend>
-			<?php echo $label; ?>
-			<?php if ($object->get('required') !== FALSE): ?>
-
-				<span class="required"><?php echo ($object->required === TRUE)?'*':$object->required; ?></span>
-
-			<?php endif; ?>
-		</legend>
+		<legend><?php echo $label; ?><?php if ($object->get('required') !== FALSE): ?><span class="required"><?php echo ($object->required === TRUE)?'*':$object->required; ?></span><?php endif; ?></legend>
 	<?php endif; ?>
 
 	<?php foreach ($object->options() as $option): ?>
