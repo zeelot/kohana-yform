@@ -88,13 +88,24 @@ abstract class Yuriko_YForm_Element {
 			$this->set_value($settings->get_value($this->_path));
 		}
 
-		// Using the dot-notated path to grab messages
-		$this->_messages = Arr::merge($this->_messages, $settings->get_messages($this->_path, array()));
+		$this->extract_messages($settings);
 
 		// Replace the default theme in this element
 		$this->set_theme($settings->theme);
 
 		return $this;
+	}
+
+	/**
+	 * Takes any related messages out of a YForm object and adds them to the element
+	 *
+	   @param object $settings
+	 * @return  self
+	 */
+	public function extract_messages(YForm $settings)
+	{
+		// Using the dot-notated path to grab messages
+		$this->_messages = Arr::merge($this->_messages, $settings->get_messages($this->_path, array()));
 	}
 
 	/**
