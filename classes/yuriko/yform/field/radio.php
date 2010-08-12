@@ -13,6 +13,9 @@ class Yuriko_YForm_Field_Radio extends YForm_Element {
 	{
 		parent::__construct($name);
 
+		// The path is a little different for radio buttons
+		$this->_path = preg_replace('#\[([^\[\]]++)\]#', '.\1', $name.'.'.$value);
+
 		$this->set_attribute('type', 'radio')
 			->set_attribute('value', $value)
 			->set_attribute('id', $this->get_attribute('id').'_'.$value);
