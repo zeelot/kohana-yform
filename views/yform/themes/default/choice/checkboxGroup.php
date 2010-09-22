@@ -1,6 +1,6 @@
 
-<!-- BEGIN YForm_RadioGroup Element -->
-<fieldset class="yform-item yform-radioGroup<?php echo empty($messages['errors']) ? '' : ' has-errors'; ?>" id="<?php echo Arr::get($attributes, 'id'); ?>-container">
+<!-- BEGIN YForm_CheckboxGroup Element -->
+<fieldset class="yform-item yform-checkboxGroup<?php echo empty($messages['errors']) ? '' : ' has-errors'; ?>" id="<?php echo Arr::get($attributes, 'id'); ?>-container">
 
 	<?php if( ! empty($label)): ?>
 		<legend><?php echo $label; ?><?php if ($object->get('required') !== FALSE): ?><span class="required"><?php echo ($object->required === TRUE)?'*':$object->required; ?></span><?php endif; ?></legend>
@@ -24,4 +24,4 @@
 		<div class="message error"><?php echo $error; ?></div>
 	<?php endforeach; ?>
 </fieldset>
-<!-- END YForm_RadioGroup Element -->
+<!-- END YForm_CheckboxGroup Element -->

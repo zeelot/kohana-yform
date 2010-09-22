@@ -1,12 +1,16 @@
 
-<!-- BEGIN YForm_Text Element -->
-<div class="yform-item yform-text<?php echo empty($messages['errors']) ? '' : ' has-errors'; ?>" id="<?php echo Arr::get($attributes, 'id'); ?>-container">
+<!-- BEGIN YForm_Select Element -->
+<div class="yform-item yform-select<?php echo empty($messages['errors']) ? '' : ' has-errors'; ?>" id="<?php echo Arr::get($attributes, 'id'); ?>-container">
 
 	<?php if ( ! empty($label)): ?>
 		<label for="<?php echo Arr::get($attributes, 'id'); ?>" ><?php echo $label; ?><?php if ($object->get('required') !== FALSE): ?><span class="required"><?php echo ($object->required === TRUE)?'*':$object->required; ?></span><?php endif; ?></label>
 	<?php endif; ?>
 
-	<input <?php echo HTML::attributes($attributes); ?>/>
+	<select <?php echo HTML::attributes($attributes); ?>>
+	<?php foreach ($object->options() as $value => $name): ?>
+	<option value="<?php echo HTML::chars($value); ?>" <?php echo ((string)$value === (string)Arr::get($attributes, 'value'))? 'selected="selected"' : NULL; ?> <?= HTML::attributes($object->option_attributes($value)); ?>><?php echo HTML::chars($name); ?></option>
+	<?php endforeach; ?>
+	</select>
 
 	<?php foreach ($messages as $type => $array): ?>
 		<?php if ($type !== 'errors'): // We want errors last ?>
@@ -22,4 +26,5 @@
 		<div class="message error"><?php echo $error; ?></div>
 	<?php endforeach; ?>
 </div>
-<!-- END YForm_Text Element -->
+<!-- END YForm_Select Element -->
+

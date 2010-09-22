@@ -11,21 +11,19 @@ abstract class Yuriko_YForm_Element {
 
 	/**
 	 * The config options for this element.
-	 *
-	 * @var array
 	 */
-	protected $_config = array
-	(
-		'theme' => 'default',
-		'view' => 'default',
-	);
+	protected $_theme = 'default';
+	protected $_view  = 'element';
 
 	/**
 	 * Label text for this element (not the i18n string)
 	 *
 	 * @var string
 	 */
+	protected $_has_label = TRUE;
 	protected $_label;
+	protected $_name;
+	protected $_path;
 
 	/**
 	 * Values directly accessible by __get()
@@ -46,7 +44,7 @@ abstract class Yuriko_YForm_Element {
 	);
 
 	/**
-	 * An array of YForm_Message objects organized into groups
+	 * An array of messages organized into groups
 	 *
 	 * @var array
 	 */
@@ -61,36 +59,53 @@ abstract class Yuriko_YForm_Element {
 
 	public function __construct($name)
 	{
-		$this->_object += array
-		(
-			'name' => $name,
-		);
+		$this->_name = $name;
+
+		$this->_path = preg_replace('#\[([^\[\]]++)\]#', '.\1', $name);
+		if ($this->_has_label === TRUE)
+		{
+			$this->_label = $this->_path;
+		}
 
 		$this->set_attribute('name', $name);
 
-		// Namespace the ID properly if the name is something like form[name]
-		$id = preg_replace('#\[([^\[\]]++)\]#', '-\1', $name);
-		$this->set_attribute('id', $id);
+		if ( ! empty($name))
+		{
+			// Namespace the ID properly if the name is something like form[name]
+			$id = preg_replace('#\[([^\[\]]++)\]#', '-\1', $name);
+			$this->set_attribute('id', $id);
+		}
 	}
 
-	public function load_settings(YForm &$settings = NULL)
+	public function load_settings(YForm $settings)
 	{
+		// Store for later use
 		$this->_settings = $settings;
 
-		$this->set_config('view', $settings->view($this->type()))
-			->set_config('theme', $settings->theme);
-
-		if ($this->_has_label)
+		// Using the dot-notated path to grab the value
+		if ($settings->get_value($this->_path) !== FALSE)
 		{
-			$this->label = $settings->label($this->get_attribute('id'), $this->name);
+			$this->set_value($settings->get_value($this->_path));
 		}
+
+		$this->extract_messages($settings);
+
+		// Replace the default theme in this element
+		$this->set_theme($settings->theme);
 
 		return $this;
 	}
 
-	protected function type()
+	/**
+	 * Takes any related messages out of a YForm object and adds them to the element
+	 *
+	   @param object $settings
+	 * @return  self
+	 */
+	public function extract_messages(YForm $settings)
 	{
-		return strtolower(str_replace('YForm_Field_', '', get_class($this)));
+		// Using the dot-notated path to grab messages
+		$this->_messages = Arr::merge($this->_messages, $settings->get_messages($this->_path, array()));
 	}
 
 	/**
@@ -226,23 +241,6 @@ abstract class Yuriko_YForm_Element {
 		}
 	}
 
-	public function set_config($name, $value)
-	{
-		if (is_array($name))
-		{
-			foreach ($name as $key => $value)
-			{
-				$this->_config[$key] = $value;
-			}
-		}
-		else
-		{
-			$this->_config[$name] = $value;
-		}
-
-		return $this;
-	}
-
 	public function set_value($value)
 	{
 		$this->set_attribute('value', $value);
@@ -257,15 +255,15 @@ abstract class Yuriko_YForm_Element {
 	 * @param YForm_Message $message
 	 * @return self
 	 */
-	public function add_message(YForm_Message $message)
+	public function add_message($group, $message)
 	{
-		$this->_messages[$message->group][] = $message;
+		$this->_messages[$group][] = $message;
 
 		return $this;
 	}
 
 	/**
-	 * Returns the YForm_Message objects in $group or $default if none are set
+	 * Returns the messages in $group or $default if none are set
 	 *
 	 * @param string|array $groups
 	 * @param mixed $default
@@ -276,10 +274,45 @@ abstract class Yuriko_YForm_Element {
 		return $this->_messages;
 	}
 
+	public function set_theme($name)
+	{
+		$this->_theme = $name;
+	}
+
+	public function set_label($label)
+	{
+		$this->_label = $label;
+		return $this;
+	}
+
 	public function get_label()
 	{
-		// @TODO: i18n
-		return $this->_label;
+		if ( ! $this->_has_label)
+			return FALSE;
+
+		if ($label = Kohana::message('yform/labels', $this->_label))
+		{
+			// Found the label defined in the most granular location
+		}
+		else
+		{
+			// Travel in towards to field to find the nearest match
+			$segments = explode('.', $this->_label);
+			// Already tried the full path, shift the first element out
+			array_shift($segments);
+
+			while (count($segments) > 0)
+			{
+				if ($label = Kohana::message('yform/labels', implode('.', $segments)))
+					break;
+
+				// Keep shifting the array until we run out of attempts
+				array_shift($segments);
+			}
+		}
+
+		// Return the possible match or the label (path) unmodified
+		return $label ? $label : $this->_label;
 	}
 
 	public function __toString()
@@ -308,6 +341,7 @@ abstract class Yuriko_YForm_Element {
 			->set('object', $this)
 			->set('attributes', $this->get_attributes())
 			->set('messages', $this->get_messages())
+			->set('label', $this->get_label())
 			->render();
 	}
 
@@ -318,7 +352,7 @@ abstract class Yuriko_YForm_Element {
 	 */
 	public function view()
 	{
-		return 'yform/themes/'.$this->_config['theme'].'/'.$this->_config['view'];
+		return 'yform/themes/'.$this->_theme.'/'.$this->_view;
 	}
 
 } // End Yuriko_YForm_Element

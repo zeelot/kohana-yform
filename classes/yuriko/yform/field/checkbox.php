@@ -1,13 +1,13 @@
 <?php defined('SYSPATH') OR die('No direct access allowed.');
-
 /**
  * @package    YurikoCMS
  * @author     Lorenzo Pisani - Zeelot
  * @copyright  (c) 2008-2010 Lorenzo Pisani
  * @license    http://yurikocms.com/license
  */
-
 class Yuriko_YForm_Field_Checkbox extends YForm_Element {
+
+	protected $_view = 'input/checkbox';
 
 	public function __construct($name)
 	{
@@ -24,7 +24,7 @@ class Yuriko_YForm_Field_Checkbox extends YForm_Element {
 	 */
 	public function set_value($value)
 	{
-		if ($value !== NULL)
+		if ($value)
 		{
 			$this->set_attribute('checked', 'checked');
 		}

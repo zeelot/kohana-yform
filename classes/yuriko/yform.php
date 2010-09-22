@@ -10,6 +10,27 @@
 class Yuriko_YForm {
 
 	/**
+	 * Returns an instance of a form field
+	 *
+	 * @param   string $field
+	 * @param   array  $args
+	 * @return  object
+	 */
+	public static function create_element($field, $args)
+	{
+		$element = 'YForm_Field_'.ucfirst($field);
+
+		$class = new ReflectionClass($element);
+
+		return $class->newInstanceArgs($args);
+	}
+
+	public static function factory($name = NULL, $group = 'default')
+	{
+		return new YForm($name, $group);
+	}
+
+	/**
 	 * Settings for elements created by this object
 	 *
 	 * @var array
@@ -39,18 +60,15 @@ class Yuriko_YForm {
 	 * @var object
 	 */
 	protected $_form;
-
-	public static function factory($name = NULL, $group = 'default')
-	{
-		return new YForm($name, $group);
-	}
+	protected $_name;
 
 	public function __construct($name = NULL, $group = 'default')
 	{
 		$config = Kohana::config('yform.'.$group);
 		$this->_settings = array_merge($this->_settings, $config);
 
-		$this->_form = $this->form($name);
+		// Store the name for when we create the form element in open()
+		$this->_name = $name;
 	}
 
 	/**
@@ -62,11 +80,7 @@ class Yuriko_YForm {
 	 */
 	public function __call($method, $args)
 	{
-		$element = 'YForm_Field_'.ucfirst($method);
-
-		$class = new ReflectionClass($element);
-
-		$instance = $class->newInstanceArgs($args);
+		$instance = self::create_element($method, $args);
 
 		// Load settings from this form object
 		$instance->load_settings($this);
@@ -85,10 +99,7 @@ class Yuriko_YForm {
 	 */
 	public function add_messages($group, array $messages)
 	{
-		foreach ($messages as $field => $message)
-		{
-			$this->_messages[$field][$group][] = $message;
-		}
+		$this->_messages[$group] = Arr::merge(Arr::get($this->_messages, $group, array()), $messages);
 
 		return $this;
 	}
@@ -96,13 +107,24 @@ class Yuriko_YForm {
 	/**
 	 * Returns all the messages for a field or $default if it is not set
 	 *
-	 * @param string $field
+	 * @param string $path
 	 * @param mixed $default
 	 * @return mixed
 	 */
-	public function get_messages($field, $default = FALSE)
+	public function get_messages($path, $default = FALSE)
 	{
-		return Arr::get($this->_messages, $field, $default);
+		$messages = array();
+
+		foreach ($this->_messages as $group => $msgs)
+		{
+			if (($msg = Arr::path($msgs, $path)) !== NULL)
+			{
+				// They should always be arrays
+				$messages[$group] = (array)$msg;
+			}
+		}
+
+		return (count($messages) > 0) ? $messages : $default;
 	}
 
 	/**
@@ -119,7 +141,7 @@ class Yuriko_YForm {
 
 		foreach ($args as $array)
 		{
-			$this->_values = array_merge($this->_values, $array);
+			$this->_values = Arr::merge($this->_values, $array);
 		}
 
 		return $this;
@@ -132,20 +154,9 @@ class Yuriko_YForm {
 	 * @param mixed $default
 	 * @return mixed
 	 */
-	public function get_value($field, $default = FALSE)
+	public function get_value($path, $default = FALSE)
 	{
-		return Arr::get($this->_values, $field, $default);
-	}
-
-	/**
-	 * Returns the path to the view in the current theme (defined by settings)
-	 *
-	 * @param string $element - the element name
-	 * @return string
-	 */
-	public function view($element)
-	{
-		return $this->_settings['views'][$element];
+		return Arr::path($this->_values, $path, $default);
 	}
 
 	/**
@@ -192,6 +203,8 @@ class Yuriko_YForm {
 	 */
 	public function open($action = NULL, array $attributes = array())
 	{
+		// Create the form element before rendering it
+		$this->_form = $this->form($this->_name);
 		return $this->_form->open($action, $attributes);
 	}
 

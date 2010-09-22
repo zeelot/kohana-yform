@@ -1,12 +1,11 @@
 
-<!-- BEGIN YForm_Text Element -->
-<div class="yform-item yform-text<?php echo empty($messages['errors']) ? '' : ' has-errors'; ?>" id="<?php echo Arr::get($attributes, 'id'); ?>-container">
-
+<!-- BEGIN YForm_Textarea Element -->
+<div class="yform-item yform-textarea<?php echo empty($messages['errors']) ? '' : ' has-errors'; ?>" id="<?php echo Arr::get($attributes, 'id'); ?>-container">
 	<?php if ( ! empty($label)): ?>
 		<label for="<?php echo Arr::get($attributes, 'id'); ?>" ><?php echo $label; ?><?php if ($object->get('required') !== FALSE): ?><span class="required"><?php echo ($object->required === TRUE)?'*':$object->required; ?></span><?php endif; ?></label>
 	<?php endif; ?>
 
-	<input <?php echo HTML::attributes($attributes); ?>/>
+	<textarea <?php echo HTML::attributes($attributes); ?>><?php echo HTML::chars($object->value); ?></textarea>
 
 	<?php foreach ($messages as $type => $array): ?>
 		<?php if ($type !== 'errors'): // We want errors last ?>
@@ -22,4 +21,4 @@
 		<div class="message error"><?php echo $error; ?></div>
 	<?php endforeach; ?>
 </div>
-<!-- END YForm_Text Element -->
+<!-- END YForm_Textarea Element -->

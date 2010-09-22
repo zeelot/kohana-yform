@@ -5,39 +5,37 @@
 ?>
 
 <?php
+	// Lets go back to basics without a settings object
+	$field = new YForm_Field_Text('hello[world]');
+	echo $field;
 
-// uses the default config group
-$form = YForm::factory('payment')
-	->add_values((array)$values)
-	->add_messages('error', (array)$errors);
+	$field = new YForm_Field_Hidden('hello[hidden]', 'haha!');
+	echo $field;
 
-// this is usually done with ORM::select_list() in one line
-$colors = array
-(
-	'red'    => 'red',
-	'blue'   => 'blue',
-	'green'  => 'green',
-	'orange' => 'orange',
-)
+	$field = new YForm_Field_Password('hello[password]');
+	echo $field;
+
+	$field = new YForm_Field_Radio('hello[color]', 'red');
+	echo $field;
+
+	$field = new YForm_Field_RadioGroup('hello[color]');
+	echo $field->add_options(array
+	(
+		'red' => 'red',
+	));
+
+	$field = new YForm_Field_Checkbox('hello[checkme]');
+	echo $field;
+
+	$field = new YForm_Field_Textarea('hello[textarea]');
+	echo $field;
+
+	$field = new YForm_Field_Submit('hello[submit]');
+	echo $field;
+
+	$field = new YForm_Field_Reset('hello[reset]');
+	echo $field;
+
+	$field = new YForm_Field_Button('hello[button]');
+	echo $field;
 ?>
-
-<?php echo $form->open(); ?>
-<fieldset>
-	<legend>Simple Form</legend>
-	<?php echo $form->text('name'); ?>
-	<?php echo $form->checkbox('remember'); ?>
-
-	<fieldset>
-		<legend>Favorite Color</legend>
-		<?php echo $form->radio('color', 'red'); ?>
-		<?php echo $form->radio('color', 'blue'); ?>
-		<?php echo $form->radio('color', 'green'); ?>
-		<?php echo $form->radio('color', 'orange'); ?>
-	</fieldset>
-
-	<?php echo $form->radioGroup('color')
-		->add_options($colors); ?>
-
-	<?php echo $form->submit('submit'); ?>
-</fieldset>
-<?php echo $form->close(); ?>

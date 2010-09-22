@@ -1,7 +1,7 @@
 
-<!-- BEGIN YForm_Submit Element -->
-<div class="yform-item yform-submit<?php echo empty($messages['errors']) ? '' : ' has-errors'; ?>" id="<?php echo Arr::get($attributes, 'id'); ?>-container">
-	<button <?php echo HTML::attributes($attributes); ?>><?php echo (empty($label))?'':$label;?></button>
+<!-- BEGIN YForm_Hidden Element -->
+<div class="yform-item yform-hidden<?php echo empty($messages['errors']) ? '' : ' has-errors'; ?>" id="<?php echo Arr::get($attributes, 'id'); ?>-container">
+	<input <?php echo HTML::attributes($attributes); ?>/>
 
 	<?php foreach ($messages as $type => $array): ?>
 		<?php if ($type !== 'errors'): // We want errors last ?>
@@ -17,4 +17,4 @@
 		<div class="message error"><?php echo $error; ?></div>
 	<?php endforeach; ?>
 </div>
-<!-- END YForm_Submit Element -->
+<!-- END YForm_Hidden Element -->

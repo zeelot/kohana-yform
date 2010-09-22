@@ -5,7 +5,7 @@
  * @copyright  (c) 2008-2010 Lorenzo Pisani
  * @license    http://yurikocms.com/license
  */
-class Yuriko_YForm_Field_Text extends YForm_Element {
+class Yuriko_YForm_Field_Number extends YForm_Element {
 
 	protected $_view = 'input/text';
 
@@ -13,7 +13,7 @@ class Yuriko_YForm_Field_Text extends YForm_Element {
 	{
 		parent::__construct($name);
 
-		$this->set_attribute('type', 'text');
+		$this->set_attribute('type', 'number');
 	}
 	
-} // End Yuriko_YForm_Field_Text
+} // End Yuriko_YForm_Field_Number
