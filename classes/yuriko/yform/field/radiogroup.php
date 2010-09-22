@@ -50,6 +50,7 @@ class Yuriko_YForm_Field_RadioGroup extends YForm_Field_Group {
 		return ($this->_settings !== NULL)
 			// Use the above settings object to create our element
 			? $this->_settings->__call($method, $args)
+				->set_value($this->_settings->get_value($this->_path))
 			// We are creating elements without a form object
 			: YForm::create_element($method, $args);
 	}
