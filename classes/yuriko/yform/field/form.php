@@ -24,10 +24,10 @@ class Yuriko_YForm_Field_Form extends YForm_Element {
 	 */
 	public function open($action = NULL, array $attributes = NULL)
 	{
-		if ($action === NULL)
+		if ($action instanceof Request)
 		{
 			// Use the current URI
-			$action = Request::instance()->uri;
+			$action = $action->uri();
 		}
 
 		if ($action === '')
