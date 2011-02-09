@@ -88,6 +88,9 @@ abstract class Yuriko_YForm_Element {
 			$this->set_value($settings->get_value($this->_path));
 		}
 
+		// Prefix the form name to the label (not path)
+		$this->set_label(trim($settings->name().'.'.$this->_label , '.'));
+
 		$this->extract_messages($settings);
 
 		// Replace the default theme in this element
