@@ -196,6 +196,11 @@ class Yuriko_YForm {
 		return $this->_settings[$key];
 	}
 
+	public function name()
+	{
+		return $this->_name;
+	}
+
 	/**
 	 * Renders the view for opening a form
 	 *
