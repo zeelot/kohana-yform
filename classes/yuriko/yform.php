@@ -64,7 +64,7 @@ class Yuriko_YForm {
 
 	public function __construct($name = NULL, $group = 'default')
 	{
-		$config = Kohana::config('yform.'.$group);
+		$config = Kohana::$config->load('yform.'.$group);
 		$this->_settings = array_merge($this->_settings, $config);
 
 		// Store the name for when we create the form element in open()
