@@ -327,7 +327,7 @@ abstract class Yuriko_YForm_Element {
 		catch (Exception $e)
 		{
 			// Display the exception message
-			Kohana::exception_handler($e);
+			Kohana_Exception::handler($e);
 
 			return '';
 		}
