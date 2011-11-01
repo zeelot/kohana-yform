@@ -31,12 +31,12 @@ class Yuriko_YForm_Field_Radio extends YForm_Element {
 	{
 		$this_radio = $this->get_attribute('value', NULL);
 
-		if ($this_radio AND (string)$value === (string)$this_radio)
+		if ($this_radio !== NULL AND (string)$value === (string)$this_radio)
 		{
 			$this->set_attribute('checked', 'checked');
 		}
 
 		return $this;
 	}
-	
+
 } // End Yuriko_YForm_Field_Text
